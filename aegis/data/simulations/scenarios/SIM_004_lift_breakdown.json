@@ -1,0 +1,49 @@
+{
+  "scenario_id": "SIM_004",
+  "title": "Lift Breakdown with Trapped Passengers",
+  "difficulty": "beginner",
+  "severity_level": 2,
+  "duration_minutes": 3,
+  "description": "Lift B3 in Terminal 2 has stopped between floors with passengers inside. The alarm button is being pressed.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "sensor",
+      "event": {
+        "type": "lift_alarm",
+        "source_id": "LIFT_T2_B3_L1",
+        "location_id": "T2_LIFT_B3",
+        "anomaly_score": 0.45,
+        "details": "Lift alarm activated — lift B3L1 stationary between floors, alarm button pressed"
+      }
+    },
+    {
+      "time_offset_seconds": 8,
+      "modality": "audio",
+      "event": {
+        "type": "intercom_call",
+        "source_id": "INTERCOM_T2_LIFT_B3",
+        "location_id": "T2_LIFT_B3",
+        "anomaly_score": 0.4,
+        "details": "Passengers inside lift requesting assistance — 3 adults, one appears anxious"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "dispatch officer to T2_LIFT_B3 and contact CAG Facilities Management ext 3000",
+    "secondary_action": "communicate with trapped passengers via intercom — reassure and advise to stay calm",
+    "do_not": "Do not attempt to force open lift doors without technician authorization",
+    "escalation": "If passenger has medical emergency inside lift, escalate to Level 3 and call Airport Medical Services",
+    "expected_response_time_seconds": 60
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

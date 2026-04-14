@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+models/anomalib/*.ckpt
+models/anomalib/*.onnx
+models/panns/*.pth
+models/clap/*.bin
+models/whisper/*.pt
+data/chroma/
+data/demo/*.mp4
+data/demo/*.wav
+*.log
+
+# Docker
+docker-compose.override.yml

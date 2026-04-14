@@ -1,0 +1,71 @@
+{
+  "scenario_id": "SIM_006",
+  "title": "Fire Alarm — Terminal 3 Retail",
+  "difficulty": "intermediate",
+  "severity_level": 4,
+  "duration_minutes": 6,
+  "description": "A fire alarm has been triggered in a Terminal 3 retail outlet. Smoke is visible on CCTV. Passengers are beginning to panic.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "sensor",
+      "event": {
+        "type": "fire_alarm",
+        "source_id": "SMOKE_T3_ARR_01",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.8,
+        "details": "Smoke detector activated in T3 arrival hall near retail cluster — sustained alarm"
+      }
+    },
+    {
+      "time_offset_seconds": 5,
+      "modality": "video",
+      "event": {
+        "type": "smoke_detected",
+        "source_id": "CAM_T3_ARR_03",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.85,
+        "details": "Visible smoke rising from retail outlet on CCTV — passengers self-evacuating"
+      }
+    },
+    {
+      "time_offset_seconds": 15,
+      "modality": "audio",
+      "event": {
+        "type": "crowd_panic",
+        "source_id": "CAM_T3_ARR_04",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.75,
+        "details": "Shouting and rapid crowd movement detected — panic spreading in arrival hall"
+      }
+    },
+    {
+      "time_offset_seconds": 25,
+      "modality": "sensor",
+      "event": {
+        "type": "crowd_density_critical",
+        "source_id": "CROWD_DENSITY_T3_ARR",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.7,
+        "details": "Critical crowd density at exit points — evacuation bottleneck forming"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "activate fire alarm and notify SCDF via 995 and ARFF simultaneously",
+    "secondary_action": "use PA system to announce evacuation using code Red — do not say fire",
+    "do_not": "Do not use lifts during evacuation. Do not say fire on public PA.",
+    "escalation": "If fire spreads beyond initial zone, escalate to Level 5 and begin full terminal evacuation",
+    "expected_response_time_seconds": 20
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

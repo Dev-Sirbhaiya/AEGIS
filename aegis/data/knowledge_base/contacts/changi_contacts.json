@@ -1,0 +1,80 @@
+{
+  "emergency_contacts": {
+    "APD": {
+      "name": "Airport Police Division",
+      "phone": "6542-7777",
+      "emergency": "999",
+      "role": "Law enforcement, armed response, bomb disposal coordination",
+      "response_time_minutes": 5
+    },
+    "ARFF": {
+      "name": "Aircraft Rescue and Fire Fighting",
+      "phone": "6595-6118",
+      "emergency": "995",
+      "role": "Aircraft fire, structural fire, rescue operations",
+      "response_time_minutes": 3
+    },
+    "Medical": {
+      "name": "Airport Medical Services",
+      "phone_t1": "6595-6868",
+      "phone_t2": "6595-3911",
+      "phone_t3": "6595-5822",
+      "phone_t4": "6595-7733",
+      "role": "Medical emergencies, first aid, AED coordination",
+      "response_time_minutes": 4
+    },
+    "SCDF": {
+      "name": "Singapore Civil Defence Force",
+      "emergency": "995",
+      "phone": "1800-286-5555",
+      "role": "Fire, HAZMAT, search and rescue, mass casualty",
+      "response_time_minutes": 8
+    },
+    "SPF": {
+      "name": "Singapore Police Force",
+      "emergency": "999",
+      "phone": "6255-0000",
+      "role": "General law enforcement, armed support",
+      "response_time_minutes": 10
+    }
+  },
+  "operational_contacts": {
+    "CAG": {
+      "name": "Changi Airport Group Operations Centre",
+      "phone": "6595-6868",
+      "role": "Terminal operations, facilities, passenger services",
+      "available": "24/7"
+    },
+    "CAAS": {
+      "name": "Civil Aviation Authority of Singapore Duty Officer",
+      "phone": "6541-2004",
+      "role": "Aviation safety and security, airspace incidents, CAAS notifications",
+      "available": "24/7"
+    },
+    "Certis_SOC": {
+      "name": "Certis Security Operations Centre",
+      "phone": "6747-2888",
+      "role": "Security escalation, officer dispatch, CCTV review",
+      "available": "24/7"
+    },
+    "ICA": {
+      "name": "Immigration and Checkpoints Authority Duty Officer",
+      "phone": "6391-6100",
+      "role": "Immigration matters, passenger flagging, deportation",
+      "available": "24/7"
+    },
+    "ATC": {
+      "name": "Changi Approach Control (ATC)",
+      "phone": "6541-2244",
+      "role": "Airspace management, drone intrusion, aircraft ground stops",
+      "available": "24/7"
+    }
+  },
+  "terminal_contacts": {
+    "T1_duty_manager": {"name": "T1 Terminal Duty Manager", "phone": "6595-1100", "radio": "Channel 1"},
+    "T2_duty_manager": {"name": "T2 Terminal Duty Manager", "phone": "6595-2200", "radio": "Channel 2"},
+    "T3_duty_manager": {"name": "T3 Terminal Duty Manager", "phone": "6595-3300", "radio": "Channel 3"},
+    "T4_duty_manager": {"name": "T4 Terminal Duty Manager", "phone": "6595-4400", "radio": "Channel 4"},
+    "facilities": {"name": "CAG Facilities Management", "phone": "6595-3000", "role": "Lifts, escalators, building systems"}
+  }
+}

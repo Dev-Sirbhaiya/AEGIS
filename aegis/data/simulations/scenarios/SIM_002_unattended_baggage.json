@@ -1,0 +1,60 @@
+{
+  "scenario_id": "SIM_002",
+  "title": "Unattended Baggage — Terminal 1",
+  "difficulty": "beginner",
+  "severity_level": 3,
+  "duration_minutes": 5,
+  "description": "A bag has been left unattended near the T1 check-in counters for over 20 minutes. No owner has come forward following a PA announcement.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "video",
+      "event": {
+        "type": "unattended_object",
+        "source_id": "CAM_T1_CKG_02",
+        "location_id": "T1_CHECKIN_ROW_G",
+        "anomaly_score": 0.55,
+        "details": "Unattended backpack detected near check-in row G, stationary for 22 minutes"
+      }
+    },
+    {
+      "time_offset_seconds": 12,
+      "modality": "sensor",
+      "event": {
+        "type": "crowd_density_low",
+        "source_id": "CROWD_DENSITY_T1_G",
+        "location_id": "T1_CHECKIN_ROW_G",
+        "anomaly_score": 0.3,
+        "details": "Crowd has naturally dispersed around the unattended item"
+      }
+    },
+    {
+      "time_offset_seconds": 30,
+      "modality": "log",
+      "event": {
+        "type": "pa_announcement_made",
+        "source_id": "PA_T1",
+        "location_id": "T1_CHECKIN_ROW_G",
+        "anomaly_score": 0.2,
+        "details": "PA announcement made — owner has not responded after 5 minutes"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "dispatch patrol to T1_CHECKIN_ROW_G to cordon the bag",
+    "secondary_action": "review CCTV to identify owner, call APD if unresolved in 10 minutes",
+    "do_not": "Do not touch, move, or open the unattended bag",
+    "escalation": "If bag has suspicious features (wires, smell), treat as bomb threat and apply Bomb Threat SOP",
+    "expected_response_time_seconds": 45
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

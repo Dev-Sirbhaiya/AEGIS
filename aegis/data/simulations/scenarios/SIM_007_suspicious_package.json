@@ -1,0 +1,71 @@
+{
+  "scenario_id": "SIM_007",
+  "title": "Suspicious Package at Screening",
+  "difficulty": "advanced",
+  "severity_level": 5,
+  "duration_minutes": 8,
+  "description": "X-ray screening flags a suspicious object in passenger baggage. The passenger is uncooperative when questioned. The bag appears to have unusual weight distribution.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "log",
+      "event": {
+        "type": "xray_flag",
+        "source_id": "XRAY_T4_A_LANE1",
+        "location_id": "T4_SCREENING_A",
+        "anomaly_score": 0.8,
+        "details": "X-ray flagged unusual dense object in passenger's carry-on — operator cannot resolve"
+      }
+    },
+    {
+      "time_offset_seconds": 10,
+      "modality": "audio",
+      "event": {
+        "type": "altercation",
+        "source_id": "CAM_T4_SCR_A_01",
+        "location_id": "T4_SCREENING_A",
+        "anomaly_score": 0.7,
+        "details": "Passenger becoming verbally aggressive when asked to step aside for secondary screening"
+      }
+    },
+    {
+      "time_offset_seconds": 20,
+      "modality": "sensor",
+      "event": {
+        "type": "etd_positive",
+        "source_id": "XRAY_T4_A_LANE2",
+        "location_id": "T4_SCREENING_A",
+        "anomaly_score": 0.92,
+        "details": "ETD trace detection positive on passenger's hands — explosive residue indicator"
+      }
+    },
+    {
+      "time_offset_seconds": 35,
+      "modality": "video",
+      "event": {
+        "type": "visual_anomaly",
+        "source_id": "CAM_T4_SCR_A_02",
+        "location_id": "T4_SCREENING_A",
+        "anomaly_score": 0.85,
+        "details": "Passenger attempting to retrieve bag and leave screening area without clearance"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "detain passenger and establish 100m cordon — notify APD Bomb Disposal Unit immediately",
+    "secondary_action": "evacuate T4 screening area and halt all boarding for T4 — notify CAAS Duty Officer",
+    "do_not": "Do not touch, X-ray again, or attempt to open the bag. Do not use mobile phones near the bag.",
+    "escalation": "Treat as Level 5 bomb threat — full terminal evacuation protocol may be required",
+    "expected_response_time_seconds": 15
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

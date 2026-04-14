@@ -1,0 +1,113 @@
+{
+  "zones": {
+    "T2_GATE_B4": {
+      "zone_id": "T2_GATE_B4",
+      "name": "Terminal 2 Gate B4",
+      "terminal": "T2",
+      "zone": "airside",
+      "level": 2,
+      "description": "Departure gate B4, airside restricted zone, international flights",
+      "cameras": ["CAM_T2_B4_01", "CAM_T2_B4_02", "CAM_T2_B4_03"],
+      "sensors": ["DOOR_T2_B4_MAIN", "MOTION_T2_B4_GATE", "SMOKE_T2_B4"],
+      "intercoms": ["INTERCOM_T2_B4_01"],
+      "access_points": ["GATE_T2_B4_AIRSIDE", "GATE_T2_B4_STAFF"],
+      "nearest_responders": [
+        {"unit": "Patrol Team Alpha", "location": "T2 Security Post B", "eta_seconds": 90},
+        {"unit": "Terminal Duty Manager", "location": "T2 Operations Centre", "eta_seconds": 180}
+      ],
+      "sop_tags": ["unauthorized_access", "active_threat", "bomb_threat", "drone_intrusion"],
+      "adjacent_zones": ["T2_GATE_B3", "T2_GATE_B5", "T2_AIRSIDE_CORRIDOR_B"]
+    },
+    "T2_LIFT_B3": {
+      "zone_id": "T2_LIFT_B3",
+      "name": "Terminal 2 Lift Lobby B3",
+      "terminal": "T2",
+      "zone": "public",
+      "level": 1,
+      "description": "Public lift lobby connecting landside arrival and departure levels at block B3",
+      "cameras": ["CAM_T2_LIFT_B3_01", "CAM_T2_LIFT_B3_02"],
+      "sensors": ["LIFT_T2_B3_L1", "LIFT_T2_B3_L2", "SMOKE_T2_B3_LIFT"],
+      "intercoms": ["INTERCOM_T2_LIFT_B3"],
+      "access_points": [],
+      "nearest_responders": [
+        {"unit": "Patrol Team Bravo", "location": "T2 Ground Floor Hub", "eta_seconds": 120},
+        {"unit": "CAG Facilities Officer", "location": "T2 Maintenance Room", "eta_seconds": 300}
+      ],
+      "sop_tags": ["lift_breakdown", "medical_emergency", "crowd_management"],
+      "adjacent_zones": ["T2_DEPARTURE_HALL_B", "T2_ARRIVAL_HALL_B", "T2_RETAIL_B3"]
+    },
+    "T3_CARGO_BAY_C": {
+      "zone_id": "T3_CARGO_BAY_C",
+      "name": "Terminal 3 Cargo Bay C",
+      "terminal": "T3",
+      "zone": "restricted",
+      "level": 1,
+      "description": "Cargo handling bay C, restricted airside zone, freight operations",
+      "cameras": ["CAM_T3_CARGO_C_01", "CAM_T3_CARGO_C_02", "CAM_T3_CARGO_C_03"],
+      "sensors": ["DOOR_T3_CARGO_C_MAIN", "DOOR_T3_CARGO_C_VEHICLE", "WEIGHT_T3_CARGO_C"],
+      "intercoms": ["INTERCOM_T3_CARGO_C"],
+      "access_points": ["VEHICLE_GATE_T3_C", "STAFF_DOOR_T3_C_01"],
+      "nearest_responders": [
+        {"unit": "Patrol Team Charlie", "location": "T3 Cargo Security Post", "eta_seconds": 60},
+        {"unit": "ARFF Unit 3", "location": "T3 Fire Station", "eta_seconds": 180}
+      ],
+      "sop_tags": ["unauthorized_access", "fire_evacuation", "bomb_threat"],
+      "adjacent_zones": ["T3_CARGO_BAY_B", "T3_AIRSIDE_ROAD_C"]
+    },
+    "T1_CHECKIN_ROW_G": {
+      "zone_id": "T1_CHECKIN_ROW_G",
+      "name": "Terminal 1 Check-in Row G",
+      "terminal": "T1",
+      "zone": "public",
+      "level": 3,
+      "description": "Landside check-in counters Row G, high passenger traffic zone",
+      "cameras": ["CAM_T1_CKG_01", "CAM_T1_CKG_02", "CAM_T1_CKG_03", "CAM_T1_CKG_04"],
+      "sensors": ["CROWD_DENSITY_T1_G", "SMOKE_T1_CKG", "BAGGAGE_SCAN_T1_G"],
+      "intercoms": ["INTERCOM_T1_CKG_G_01", "INTERCOM_T1_CKG_G_02"],
+      "access_points": ["STAFF_DOOR_T1_CKG_G"],
+      "nearest_responders": [
+        {"unit": "Patrol Team Delta", "location": "T1 Departure Hall Post", "eta_seconds": 90},
+        {"unit": "Airport Medical Services", "location": "T1 Medical Centre Level 3", "eta_seconds": 240}
+      ],
+      "sop_tags": ["crowd_management", "unattended_baggage", "aggressive_behavior", "medical_emergency"],
+      "adjacent_zones": ["T1_CHECKIN_ROW_F", "T1_CHECKIN_ROW_H", "T1_DEPARTURE_HALL"]
+    },
+    "T3_ARRIVAL_HALL": {
+      "zone_id": "T3_ARRIVAL_HALL",
+      "name": "Terminal 3 Arrival Hall",
+      "terminal": "T3",
+      "zone": "public",
+      "level": 1,
+      "description": "Main international arrival hall, high footfall, passenger meetup zone",
+      "cameras": ["CAM_T3_ARR_01", "CAM_T3_ARR_02", "CAM_T3_ARR_03", "CAM_T3_ARR_04", "CAM_T3_ARR_05"],
+      "sensors": ["CROWD_DENSITY_T3_ARR", "SMOKE_T3_ARR_01", "SMOKE_T3_ARR_02"],
+      "intercoms": ["INTERCOM_T3_ARR_01", "INTERCOM_T3_ARR_02"],
+      "access_points": ["IMMIGRATION_EXIT_T3", "CUSTOMS_EXIT_T3"],
+      "nearest_responders": [
+        {"unit": "Patrol Team Echo", "location": "T3 Arrival Hall Security Post", "eta_seconds": 60},
+        {"unit": "ICA Officers", "location": "T3 Immigration Counter", "eta_seconds": 120},
+        {"unit": "Airport Medical Services", "location": "T3 Medical Centre", "eta_seconds": 180}
+      ],
+      "sop_tags": ["crowd_management", "medical_emergency", "aggressive_behavior", "unattended_baggage"],
+      "adjacent_zones": ["T3_CUSTOMS_HALL", "T3_BAGGAGE_RECLAIM", "T3_PUBLIC_TRANSPORT_HUB"]
+    },
+    "T4_SCREENING_A": {
+      "zone_id": "T4_SCREENING_A",
+      "name": "Terminal 4 Security Screening Area A",
+      "terminal": "T4",
+      "zone": "public",
+      "level": 2,
+      "description": "Pre-departure security screening checkpoint A, transition from landside to airside",
+      "cameras": ["CAM_T4_SCR_A_01", "CAM_T4_SCR_A_02", "CAM_T4_SCR_A_03"],
+      "sensors": ["XRAY_T4_A_LANE1", "XRAY_T4_A_LANE2", "WTMD_T4_A_LANE1", "WTMD_T4_A_LANE2"],
+      "intercoms": ["INTERCOM_T4_SCR_A"],
+      "access_points": ["SCREENING_EXIT_T4_A_AIRSIDE"],
+      "nearest_responders": [
+        {"unit": "Screening Security Team A", "location": "T4 Screening Post A", "eta_seconds": 30},
+        {"unit": "Patrol Team Foxtrot", "location": "T4 Level 2 Hub", "eta_seconds": 120}
+      ],
+      "sop_tags": ["unauthorized_access", "bomb_threat", "unattended_baggage", "aggressive_behavior"],
+      "adjacent_zones": ["T4_DEPARTURE_LOUNGE", "T4_CHECKIN_HALL", "T4_AIRSIDE_CORRIDOR"]
+    }
+  }
+}

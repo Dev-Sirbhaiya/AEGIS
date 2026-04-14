@@ -1,0 +1,71 @@
+{
+  "scenario_id": "SIM_001",
+  "title": "Unauthorized Airside Access",
+  "difficulty": "beginner",
+  "severity_level": 4,
+  "duration_minutes": 5,
+  "description": "An individual is detected attempting to access an airside gate without authorization. Multiple systems trigger alerts in quick succession.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "sensor",
+      "event": {
+        "type": "door_alarm",
+        "source_id": "DOOR_T2_B4_MAIN",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.7,
+        "details": "Door forced open — unauthorized attempt at Gate B4"
+      }
+    },
+    {
+      "time_offset_seconds": 8,
+      "modality": "video",
+      "event": {
+        "type": "visual_anomaly",
+        "source_id": "CAM_T2_B4_01",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.82,
+        "details": "Unidentified individual without visible ID lanyard detected in airside zone"
+      }
+    },
+    {
+      "time_offset_seconds": 15,
+      "modality": "log",
+      "event": {
+        "type": "access_control_failure",
+        "source_id": "ACL_T2_B4",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.75,
+        "details": "Access denied — badge ID 77421 does not have airside clearance for Gate B4"
+      }
+    },
+    {
+      "time_offset_seconds": 25,
+      "modality": "audio",
+      "event": {
+        "type": "intercom_call",
+        "source_id": "INTERCOM_T2_B4_01",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.6,
+        "details": "Intercom call received from Gate B4 — caller states they are lost"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "dispatch patrol to T2_GATE_B4",
+    "secondary_action": "lock down Gate B4 via SCMT",
+    "do_not": "Do not unlock the gate until identity is confirmed",
+    "escalation": "If individual is unidentified or flees, escalate to Level 5 and notify APD",
+    "expected_response_time_seconds": 30
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "scenario_id": "SIM_005",
+  "title": "Aggressive Passenger — Gate Confrontation",
+  "difficulty": "intermediate",
+  "severity_level": 3,
+  "duration_minutes": 5,
+  "description": "A passenger is verbally aggressive at a boarding gate, refusing instructions from airline staff and threatening other passengers.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "audio",
+      "event": {
+        "type": "distress_call",
+        "source_id": "INTERCOM_T2_B4_01",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.6,
+        "details": "Airline staff requesting security assistance — passenger refusing to board and becoming aggressive"
+      }
+    },
+    {
+      "time_offset_seconds": 15,
+      "modality": "video",
+      "event": {
+        "type": "altercation",
+        "source_id": "CAM_T2_B4_02",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.7,
+        "details": "Passenger gesturing aggressively — other passengers moving away from the area"
+      }
+    },
+    {
+      "time_offset_seconds": 30,
+      "modality": "sensor",
+      "event": {
+        "type": "crowd_dispersal",
+        "source_id": "MOTION_T2_B4_GATE",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.45,
+        "details": "Motion sensor detects rapid passenger movement away from Gate B4 area"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "dispatch patrol to T2_GATE_B4 and attempt verbal de-escalation",
+    "secondary_action": "separate the individual from other passengers and request APD if physical threats made",
+    "do_not": "Do not match the passenger's aggressive tone or attempt physical restraint without justification",
+    "escalation": "If physical assault occurs, escalate to Level 4 and call APD immediately",
+    "expected_response_time_seconds": 30
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

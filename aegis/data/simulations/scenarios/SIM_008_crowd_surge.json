@@ -1,0 +1,60 @@
+{
+  "scenario_id": "SIM_008",
+  "title": "Crowd Surge — Mass Flight Cancellation",
+  "difficulty": "intermediate",
+  "severity_level": 3,
+  "duration_minutes": 5,
+  "description": "A major airline has cancelled 12 flights simultaneously due to a system outage. Thousands of passengers are converging on the check-in area creating dangerous crowd density.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "sensor",
+      "event": {
+        "type": "crowd_density_critical",
+        "source_id": "CROWD_DENSITY_T1_G",
+        "location_id": "T1_CHECKIN_ROW_G",
+        "anomaly_score": 0.72,
+        "details": "Crowd density exceeding 5 persons/sqm at T1 check-in — mass cancellation aftermath"
+      }
+    },
+    {
+      "time_offset_seconds": 12,
+      "modality": "video",
+      "event": {
+        "type": "crowd_surge",
+        "source_id": "CAM_T1_CKG_01",
+        "location_id": "T1_CHECKIN_ROW_G",
+        "anomaly_score": 0.78,
+        "details": "Video analytics detecting crowd surge pattern — reverse flow at main entrance"
+      }
+    },
+    {
+      "time_offset_seconds": 25,
+      "modality": "audio",
+      "event": {
+        "type": "shouting",
+        "source_id": "CAM_T1_CKG_03",
+        "location_id": "T1_CHECKIN_ROW_G",
+        "anomaly_score": 0.65,
+        "details": "Shouting detected in crowd — passengers frustrated and becoming agitated"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "deploy all available officers to T1 check-in and open additional processing lanes",
+    "secondary_action": "use PA to redirect passengers and contact CAG operations for additional support",
+    "do_not": "Do not use force to disperse crowd. Do not create bottlenecks by closing exits.",
+    "escalation": "If crowd causes falls or injuries, escalate to Level 4 and activate Medical Emergency SOP",
+    "expected_response_time_seconds": 45
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "scenario_id": "SIM_010",
+  "title": "Active Threat — Armed Individual",
+  "difficulty": "advanced",
+  "severity_level": 5,
+  "duration_minutes": 10,
+  "description": "Reports of an individual with a bladed weapon in Terminal 2. Multiple passengers are fleeing the area. The individual is moving toward the airside gates.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "audio",
+      "event": {
+        "type": "distress_call",
+        "source_id": "INTERCOM_T2_B4_01",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.9,
+        "details": "Caller screaming — reports a man with a knife attacking passengers near T2 boarding gates"
+      }
+    },
+    {
+      "time_offset_seconds": 8,
+      "modality": "video",
+      "event": {
+        "type": "crowd_panic",
+        "source_id": "CAM_T2_B4_01",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.92,
+        "details": "Mass crowd flight detected — people running in all directions away from Gate B4 area"
+      }
+    },
+    {
+      "time_offset_seconds": 18,
+      "modality": "sensor",
+      "event": {
+        "type": "door_forced",
+        "source_id": "GATE_T2_B4_AIRSIDE",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.88,
+        "details": "Airside access door forced — individual may be attempting to enter airside zone"
+      }
+    },
+    {
+      "time_offset_seconds": 30,
+      "modality": "video",
+      "event": {
+        "type": "visual_threat",
+        "source_id": "CAM_T2_B4_02",
+        "location_id": "T2_GATE_B4",
+        "anomaly_score": 0.96,
+        "details": "CCTV visual of individual with weapon confirmed — other persons down on floor"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "activate Level 5 protocol — notify APD, SPF, and STF immediately. Lockdown T2 Gate B4.",
+    "secondary_action": "direct civilians to shelter in place or evacuate away from threat — CCTV operator to track movement",
+    "do_not": "Do not engage armed individual unless trained tactical officer with authorization. No open radio broadcast of threat details.",
+    "escalation": "If casualties confirmed, activate Mass Casualty protocol — SCDF and TTAMC. If explosives suspected, BDU simultaneously.",
+    "expected_response_time_seconds": 10
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

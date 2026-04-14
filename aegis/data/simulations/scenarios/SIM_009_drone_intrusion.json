@@ -1,0 +1,71 @@
+{
+  "scenario_id": "SIM_009",
+  "title": "Drone Intrusion Near Runway",
+  "difficulty": "advanced",
+  "severity_level": 5,
+  "duration_minutes": 8,
+  "description": "A drone has been detected flying near the runway threshold. An inbound aircraft crew has reported the drone to ATC. The drone appears to have a camera payload.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "sensor",
+      "event": {
+        "type": "drone_detection",
+        "source_id": "RADAR_T3_PERIMETER",
+        "location_id": "T3_CARGO_BAY_C",
+        "anomaly_score": 0.85,
+        "details": "Radar detection of small UAV 800m from runway 02C threshold, altitude 120m"
+      }
+    },
+    {
+      "time_offset_seconds": 10,
+      "modality": "video",
+      "event": {
+        "type": "visual_drone_sighting",
+        "source_id": "CAM_T3_CARGO_C_01",
+        "location_id": "T3_CARGO_BAY_C",
+        "anomaly_score": 0.88,
+        "details": "CCTV visual confirmation of drone with camera — moving toward runway area"
+      }
+    },
+    {
+      "time_offset_seconds": 20,
+      "modality": "log",
+      "event": {
+        "type": "atc_alert",
+        "source_id": "ATC_CHANGI",
+        "location_id": "T3_CARGO_BAY_C",
+        "anomaly_score": 0.9,
+        "details": "ATC Changi Approach reports aircraft on final approach has sighted drone — requesting ground stop decision"
+      }
+    },
+    {
+      "time_offset_seconds": 35,
+      "modality": "sensor",
+      "event": {
+        "type": "drone_approach_runway",
+        "source_id": "RADAR_T3_PERIMETER",
+        "location_id": "T3_CARGO_BAY_C",
+        "anomaly_score": 0.95,
+        "details": "Drone now 200m from runway centerline — entering protected airspace"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "notify ATC and CAAS Duty Officer immediately — request ground stop for affected runway",
+    "secondary_action": "dispatch ground patrol to locate drone operator and alert APD",
+    "do_not": "Do not attempt to disable, capture, or shoot down drone without APD/CAAS authorization",
+    "escalation": "If drone on runway, escalate to Level 5 full ground stop. If payload suspected, activate BDU.",
+    "expected_response_time_seconds": 15
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}

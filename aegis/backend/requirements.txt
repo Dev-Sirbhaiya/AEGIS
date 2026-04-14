@@ -1,0 +1,69 @@
+# Web framework
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.18
+python-socketio==5.12.1
+
+# Database
+sqlalchemy==2.0.36
+asyncpg==0.30.0
+alembic==1.14.1
+psycopg2-binary==2.9.10
+
+# Redis
+redis==5.2.1
+
+# Authentication
+pyjwt==2.10.1
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+
+# AI/ML - Core
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.5.1
+
+# AI/ML - Anomaly Detection
+anomalib==1.2.0
+
+# AI/ML - Audio
+librosa==0.10.2.post1
+soundfile==0.12.1
+panns-inference
+
+# AI/ML - Speech
+openai-whisper==20240930
+
+# AI/ML - TTS
+edge-tts==6.1.20
+
+# AI/ML - Embeddings & RAG
+sentence-transformers==3.3.1
+chromadb==0.5.23
+langchain==0.3.14
+langchain-community==0.3.14
+langchain-text-splitters==0.3.4
+
+# AI/ML - CLAP (zero-shot audio)
+transformers
+
+# LLM Clients
+anthropic==0.40.0
+openai==1.58.1
+groq==0.13.0
+
+# Utilities
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-dotenv==1.0.1
+httpx==0.28.1
+Pillow==11.1.0
+numpy==1.26.4
+pandas==2.2.3
+aiofiles==24.1.0
+opencv-python-headless
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+httpx

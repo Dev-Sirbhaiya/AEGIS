@@ -1,0 +1,60 @@
+{
+  "scenario_id": "SIM_003",
+  "title": "Medical Emergency — Collapsed Passenger",
+  "difficulty": "beginner",
+  "severity_level": 3,
+  "duration_minutes": 4,
+  "description": "A passenger has collapsed in Terminal 3 Arrival Hall. Bystanders are gathered and an intercom call has been received.",
+  "events_timeline": [
+    {
+      "time_offset_seconds": 0,
+      "modality": "audio",
+      "event": {
+        "type": "intercom_call",
+        "source_id": "INTERCOM_T3_ARR_01",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.65,
+        "details": "Caller reports a man has collapsed and is unresponsive near the T3 arrival exit"
+      }
+    },
+    {
+      "time_offset_seconds": 10,
+      "modality": "video",
+      "event": {
+        "type": "crowd_anomaly",
+        "source_id": "CAM_T3_ARR_02",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.6,
+        "details": "Crowd forming around a person on the floor — crowd density increasing"
+      }
+    },
+    {
+      "time_offset_seconds": 20,
+      "modality": "sensor",
+      "event": {
+        "type": "crowd_density_high",
+        "source_id": "CROWD_DENSITY_T3_ARR",
+        "location_id": "T3_ARRIVAL_HALL",
+        "anomaly_score": 0.5,
+        "details": "Crowd density reaching threshold near exit — risk of bystander obstruction"
+      }
+    }
+  ],
+  "optimal_response": {
+    "primary_action": "dispatch patrol and call airport medical services T3 ext 5822",
+    "secondary_action": "clear surrounding area and locate nearest AED",
+    "do_not": "Do not move the patient if fall or spinal injury is suspected",
+    "escalation": "If patient has no pulse, escalate to Level 4 and request SCDF ambulance immediately",
+    "expected_response_time_seconds": 30
+  },
+  "scoring_rubric": {
+    "response_time_30s": 10,
+    "response_time_60s": 7,
+    "response_time_90s": 4,
+    "correct_primary_action": 30,
+    "correct_secondary_action": 20,
+    "appropriate_escalation": 20,
+    "no_over_reaction": 10,
+    "communication_quality": 10
+  }
+}
