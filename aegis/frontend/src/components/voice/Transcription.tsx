@@ -13,28 +13,31 @@ export default function Transcription() {
 
   if (!selectedCallId) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-600 text-sm">
-        No call selected
+      <div className="flex-1 flex items-center justify-center text-gray-600 text-sm font-mono">
+        NO CALL SELECTED
       </div>
     );
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2 min-h-0">
+    <div
+      className="flex-1 overflow-y-auto px-3 py-2 space-y-2 min-h-0"
+      style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%)' }}
+    >
       {entries.length === 0 && (
-        <p className="text-gray-600 text-xs text-center mt-4">Waiting for audio...</p>
+        <p className="text-gray-600 text-xs text-center mt-4 font-mono">WAITING FOR AUDIO...</p>
       )}
       {entries.map((entry, i) => (
         <div key={i} className={`flex ${entry.role === 'agent' ? 'justify-end' : 'justify-start'}`}>
           <div
             className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
               entry.role === 'agent'
-                ? 'bg-blue-800 text-blue-100'
-                : 'bg-gray-700 text-gray-200'
+                ? 'bg-aegis-cyan/10 border border-aegis-cyan/30 text-aegis-cyan/90'
+                : 'bg-white/5 border border-white/10 text-gray-200'
             }`}
           >
-            <div className="text-xs opacity-60 mb-1">
-              {entry.role === 'agent' ? 'AEGIS Voice' : 'Caller'}
+            <div className="text-[10px] font-mono opacity-60 mb-1 tracking-wide">
+              {entry.role === 'agent' ? 'AEGIS VOICE' : 'CALLER'}
               {' · '}
               {new Date(entry.timestamp).toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </div>

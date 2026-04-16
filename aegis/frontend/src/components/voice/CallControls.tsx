@@ -35,11 +35,11 @@ export default function CallControls() {
   };
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 border-t border-gray-700">
+    <div className="flex items-center gap-2 px-3 py-2 border-t border-white/5">
       <button
         onClick={handleTakeover}
         disabled={loading === 'takeover'}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded transition-colors"
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-aegis-cyan/20 hover:bg-aegis-cyan/30 border border-aegis-cyan/50 text-aegis-cyan text-xs font-mono font-bold rounded transition-all hover:shadow-[0_0_8px_rgba(0,212,255,0.4)] disabled:opacity-50"
       >
         <UserCheck size={14} />
         TAKE OVER
@@ -47,8 +47,10 @@ export default function CallControls() {
 
       <button
         onClick={() => setMuted((m) => !m)}
-        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-          muted ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold rounded border transition-all ${
+          muted
+            ? 'bg-amber-950 border-amber-700 text-amber-400'
+            : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20'
         }`}
       >
         {muted ? <MicOff size={14} /> : <Mic size={14} />}
@@ -58,7 +60,7 @@ export default function CallControls() {
       <button
         onClick={handleEnd}
         disabled={loading === 'end'}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-700 hover:bg-red-800 disabled:opacity-50 text-white text-xs font-semibold rounded transition-colors ml-auto"
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-950 hover:bg-red-900 border border-red-700 text-red-400 text-xs font-mono font-bold rounded transition-all ml-auto hover:glow-red disabled:opacity-50"
       >
         <PhoneOff size={14} />
         END CALL
