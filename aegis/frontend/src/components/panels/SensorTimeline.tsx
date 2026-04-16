@@ -18,10 +18,10 @@ export default function SensorTimeline() {
     }));
 
   return (
-    <div className="bg-gray-900 rounded border border-gray-700">
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-700 text-sm text-gray-300">
-        <Cpu size={14} />
-        <span>Sensor Timeline</span>
+    <div className="glass-panel">
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-white/5 text-gray-300">
+        <Cpu size={14} className="text-aegis-cyan" />
+        <span className="text-xs font-mono tracking-wider">SENSOR TIMELINE</span>
       </div>
 
       <div className="px-3 py-2 max-h-28 overflow-y-auto">
@@ -31,10 +31,10 @@ export default function SensorTimeline() {
           <div className="space-y-1">
             {events.map((ev) => (
               <div key={ev.id} className="flex items-center gap-2 text-xs">
-                <span className="text-gray-600 font-mono w-12 shrink-0">{ev.time}</span>
+                <span className="text-gray-600 font-mono w-12 shrink-0 text-[10px]">{ev.time}</span>
                 <div
                   className="w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: getSeverityColor(ev.severity) }}
+                  style={{ backgroundColor: getSeverityColor(ev.severity), boxShadow: `0 0 5px ${getSeverityColor(ev.severity)}` }}
                 />
                 <span className="text-gray-400 truncate">{ev.label}</span>
                 <span className="text-gray-600 shrink-0 ml-auto">{ev.type}</span>
