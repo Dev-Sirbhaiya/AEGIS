@@ -1,160 +1,271 @@
-# AEGIS — Adaptive Engagement & Guided Intelligence for Security
+# AEGIS - Adaptive Engagement & Guided Intelligence for Security
 
-**Multimodal AI-Powered Security Response Advisor for Airport Security Operations Centres**
+AEGIS is a multimodal security response advisor built for airport Security Operations Centres, with the current implementation tailored to the NAISC 2026 Certis challenge use case.
 
-Built for NAISC 2026 Grand Finals — Certis Challenge Track
+It combines CCTV, audio, access-control, and sensor context into a single operator workflow, then uses retrieval-augmented intelligence plus an LLM to explain incidents, recommend proportionate actions, support emergency-call triage, run training simulations, and generate intelligence reports.
 
----
+## What Ships on the Current Main Branch
 
-## Quick Start
+- A React SOC dashboard for live incident triage
+- A login flow with `admin / admin` after database seeding
+- Real-time Socket.IO updates for incidents, simulation events, and incident action acknowledgements
+- A voice workflow for emergency/intercom calls
+- A training simulator with accelerated event playback on a 3 to 5 second cadence
+- Daily, monthly, and predictive report views
+- Demo-safe frontend and backend fallbacks for offline or partial-demo conditions
+- A readability-first operator UI using `Public Sans` for interface text and `JetBrains Mono` for data
+- User-controlled homepage scrolling instead of a clipped fixed-height dashboard shell
 
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- Docker Desktop
-- An LLM API key (Groq is free: groq.com)
+## Current Product Direction
 
-### Setup (3 commands)
+The current frontend is no longer the older dark, cinematic concept from early design notes. The shipped UI on `main` is optimized for operator readability and live-demo reliability:
 
-```bash
-cd aegis
-
-# Copy and fill in your API key
-cp .env.example .env
-# Edit .env: set GROQ_API_KEY=your_key_here
-
-# Run full setup
-bash scripts/setup.sh
-```
-
-### Start
-
-```bash
-# Terminal 1 — Backend
-cd aegis/backend
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-
-# Terminal 2 — Frontend
-cd aegis/frontend
-npm run dev
-```
-
-Open **http://localhost:5173** · Login: `admin` / `admin`
-
----
+- lighter surfaces
+- stronger text contrast
+- cleaner input and button primitives
+- simpler navigation
+- clearer training and report screens
 
 ## Architecture
 
-```
-[CCTV/Audio/Sensors/Access Logs]
-         ↓
-   AI Fusion Engine
-   ├── Video: Anomalib (OpenVINO inference)
-   ├── Audio: PANNs + CLAP + Whisper
-   └── Sensor/Log: Rule-based parsing
-         ↓
-  Incident Correlator
-  (time window + spatial adjacency)
-         ↓
-  RAG Pipeline (ChromaDB + MiniLM)
-  + LLM Response Engine (Claude/Groq/OpenAI/Ollama)
-         ↓
-  SOC Dashboard (React + Socket.IO)
-  ├── Real-time incident list
-  ├── AI situation assessment
-  ├── Prioritized action recommendations
-  ├── Voice Agent (STT → LLM → TTS)
-  ├── Training Simulator (10 scenarios)
-  └── Intelligence Reports (daily/monthly/predictive)
+```text
+[CCTV / Audio / Sensors / Access Logs]
+                |
+                v
+     Multimodal Fusion + Correlation
+                |
+                v
+   RAG Pipeline (ChromaDB + MiniLM)
+                |
+                v
+   LLM Response Engine (provider-configurable)
+                |
+                v
+   React SOC Dashboard + Voice + Simulation + Reports
 ```
 
-## Tech Stack
+## Core Capabilities
 
-| Layer | Technology |
+### 1. Incident Triage Dashboard
+
+- incident list with severity and modality context
+- live camera/media viewing
+- AI-generated situation assessment
+- prioritized recommended actions
+- incident action acknowledgement broadcasts over Socket.IO
+
+### 2. Voice Triage Workflow
+
+- emergency/intercom call handling
+- transcription with Whisper
+- LLM-guided response generation
+- operator handoff support
+
+### 3. Training Simulator
+
+- scenario-driven officer training
+- live event feed playback
+- action capture and scoring
+- automated debrief generation
+- accelerated event cadence for demos and judging sessions
+
+### 4. Reporting
+
+- daily summary view
+- monthly trend view
+- predictive hotspot/risk view
+
+## Model and Service Stack
+
+| Area | Current stack |
 |---|---|
-| Backend | FastAPI + Python-SocketIO (ASGI) |
-| Database | PostgreSQL 16 (async SQLAlchemy) |
-| Cache/Events | Redis 7 |
-| Video AI | Anomalib (EfficientAD), OpenCV |
-| Audio AI | PANNs (AudioSet), CLAP (zero-shot), Whisper (STT) |
-| TTS | Edge-TTS (Microsoft, free) / Kokoro |
-| RAG | ChromaDB + sentence-transformers (all-MiniLM-L6-v2) |
-| LLM | Claude / Groq / OpenAI / Ollama (configurable) |
+| Backend | FastAPI + Python-SocketIO |
 | Frontend | React 18 + Vite + TypeScript + Tailwind CSS |
-| Real-time | Socket.IO (WebSocket) |
-| Containers | Docker Compose |
+| Local database | SQLite via `aiosqlite` |
+| Container database | PostgreSQL 16 |
+| Cache/events | Redis 7 |
+| Video detection | Anomalib (`efficient_ad`) |
+| Audio detection | PANNs + CLAP |
+| Speech-to-text | Whisper |
+| Embeddings | `sentence-transformers/all-MiniLM-L6-v2` |
+| Vector store | ChromaDB |
+| LLM providers | Groq, OpenAI, Claude, Ollama |
+| TTS | Edge TTS / Kokoro |
 
-## Configuration
+## Recommended Local Run Path
 
-Edit `aegis/.env` to configure:
+The easiest and most reliable local setup on Windows is:
+
+1. run the backend locally from `backend`
+2. run the frontend locally from `frontend`
+3. use SQLite for local development
+4. use Groq or Ollama for the LLM
+
+This avoids Docker during active development.
+
+Detailed instructions live in:
+
+- `docs/HOW_TO_RUN.md`
+
+### Important Runtime Notes
+
+- Local backend entrypoint: `uvicorn main:app`
+- Local backend port for frontend dev: `8001`
+- Frontend dev server: `5173`
+- Local backend reads `backend/.env`
+- Docker Compose reads the root `.env`
+
+## Quick Start
+
+### 1. Add your API key
+
+For local development, create `backend/.env`.
+
+Example for Groq:
 
 ```env
-LLM_PROVIDER=groq          # claude | openai | groq | ollama
-GROQ_API_KEY=your_key
-WHISPER_MODEL=base         # tiny | base | small | medium
-TTS_ENGINE=edge_tts        # edge_tts | kokoro
+LLM_PROVIDER=groq
+GROQ_API_KEY=your_groq_api_key_here
+DATABASE_URL=sqlite+aiosqlite:///./aegis_dev.db
+REDIS_URL=
 ```
 
-## API Reference
+Example for Ollama:
 
-| Endpoint | Description |
+```env
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_MODEL=your_installed_ollama_model
+DATABASE_URL=sqlite+aiosqlite:///./aegis_dev.db
+REDIS_URL=
+```
+
+### 2. Set up the backend
+
+```powershell
+cd C:\AEGIS\aegis\aegis\backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### 3. Set up the frontend
+
+```powershell
+cd C:\AEGIS\aegis\aegis\frontend
+npm.cmd install
+```
+
+### 4. Index knowledge and seed demo data
+
+```powershell
+cd C:\AEGIS\aegis\aegis\backend
+.\.venv\Scripts\Activate.ps1
+python ..\scripts\index_knowledge.py
+python ..\scripts\seed_db.py
+```
+
+Default login after seeding:
+
+```text
+username: admin
+password: admin
+```
+
+### 5. Run the backend
+
+```powershell
+cd C:\AEGIS\aegis\aegis\backend
+.\.venv\Scripts\Activate.ps1
+uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+```
+
+### 6. Run the frontend
+
+```powershell
+cd C:\AEGIS\aegis\aegis\frontend
+npm.cmd run dev
+```
+
+Open:
+
+- `http://localhost:5173`
+- `http://localhost:5173/training`
+- `http://localhost:5173/reports`
+
+## Optional Docker Path
+
+Docker is still supported, but it is no longer the recommended development path on Windows.
+
+When using Docker Compose:
+
+- set values in the root `.env`
+- backend runs inside the container on `8000`
+- frontend container is exposed on `3000`
+- nginx serves the app on `http://localhost`
+
+Start it with:
+
+```powershell
+cd C:\AEGIS\aegis\aegis
+docker compose up --build
+```
+
+## API Surface
+
+| Endpoint | Purpose |
 |---|---|
-| `GET /api/health` | Health check |
-| `GET /api/incidents` | List incidents (filters: status, severity, terminal) |
-| `GET /api/incidents/{id}` | Incident detail with events |
-| `PATCH /api/incidents/{id}` | Update status/notes |
-| `POST /api/voice/start` | Start voice agent call |
-| `POST /api/voice/takeover/{id}` | SOC takes over call |
-| `GET /api/simulation/scenarios` | List training scenarios |
-| `POST /api/simulation/start` | Start simulation |
-| `POST /api/simulation/end` | End simulation + get score |
-| `GET /api/reports/daily/{date}` | Daily security report |
-| `GET /api/reports/predictions` | Predictive risk heatmap |
+| `GET /api/health` | backend health check |
+| `POST /api/auth/login` | login |
+| `GET /api/incidents/` | list incidents |
+| `GET /api/cameras/` | list cameras |
+| `GET /api/media/videos/{camera_id}` | camera demo video mapping |
+| `POST /api/voice/start` | start voice workflow |
+| `POST /api/simulation/start` | start training session |
+| `POST /api/simulation/end` | end session and score |
+| `GET /api/reports/daily/{date}` | daily report |
+| `GET /api/reports/monthly/{year}/{month}` | monthly report |
+| `GET /api/reports/predictive` | predictive report data |
 
-## Training Scenarios
+## Frontend Routes
 
-| ID | Title | Difficulty | Severity |
-|---|---|---|---|
-| SIM_001 | Unauthorized Airside Access | Beginner | L4 |
-| SIM_002 | Unattended Baggage | Beginner | L3 |
-| SIM_003 | Medical Emergency | Beginner | L3 |
-| SIM_004 | Lift Breakdown | Beginner | L2 |
-| SIM_005 | Aggressive Passenger | Intermediate | L3 |
-| SIM_006 | Fire Alarm | Intermediate | L4 |
-| SIM_007 | Suspicious Package | Advanced | L5 |
-| SIM_008 | Crowd Surge | Intermediate | L3 |
-| SIM_009 | Drone Intrusion | Advanced | L5 |
-| SIM_010 | Active Threat | Advanced | L5 |
+| Route | View |
+|---|---|
+| `/login` | login and demo mode entry |
+| `/` | SOC dashboard |
+| `/training` | training simulator |
+| `/reports` | report views |
 
 ## Project Structure
 
-```
+```text
 aegis/
-├── backend/
-│   ├── api/routes/          # FastAPI route handlers
-│   ├── api/websocket/       # Socket.IO manager
-│   ├── config/              # Settings (pydantic-settings)
-│   ├── db/                  # SQLAlchemy async session
-│   ├── models/              # ORM models
-│   ├── services/
-│   │   ├── audio/           # PANNs, CLAP, Whisper, audio processing
-│   │   ├── fusion/          # Multimodal fusion engine
-│   │   ├── intelligence/    # LLM client, RAG, response engine, prompts
-│   │   ├── knowledge/       # Knowledge graph, indexer
-│   │   ├── reporting/       # Daily/monthly/predictive reports
-│   │   ├── simulation/      # Training scenario engine
-│   │   ├── video/           # Anomalib video anomaly detection
-│   │   └── voice/           # Voice agent, TTS, call manager
-│   └── tests/               # Pytest test suite
-├── data/
-│   ├── knowledge_base/      # SOPs, zones, contacts, regulations
-│   └── simulations/         # 10 scenario JSON files
-├── frontend/
-│   └── src/
-│       ├── components/      # React components (layout, panels, voice, sim, reports)
-│       ├── hooks/           # useWebSocket, useIncidents, useAuth
-│       ├── services/        # API client, Socket.IO service
-│       ├── stores/          # Zustand stores (incidents, cameras, auth, voice)
-│       └── types/           # TypeScript interfaces
-└── scripts/                 # setup.sh, seed_db.py, index_knowledge.py, download_models.py
+|- backend/
+|  |- api/
+|  |- config/
+|  |- db/
+|  |- models/
+|  |- services/
+|  `- tests/
+|- data/
+|  |- demo/
+|  |- knowledge_base/
+|  `- simulations/
+|- docs/
+|- frontend/
+|  `- src/
+|- nginx.conf
+`- scripts/
 ```
+
+## Notes for Judges, Reviewers, and Teammates
+
+- The app is human-in-the-loop decision support, not a fully autonomous response system
+- Local fallback/demo behavior is intentional and helps keep the experience stable during demos
+- The training feed is intentionally faster than authored scenario timings so the full flow fits a live presentation window
+
+## Additional Documentation
+
+- `docs/HOW_TO_RUN.md`
+- `../PRD_AEGIS.md`
+- `../AEGIS_SPEC.md`
