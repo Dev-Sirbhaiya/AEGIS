@@ -46,7 +46,7 @@ export default function StatusBar() {
 
   return (
     <div
-      className="px-4 py-1 flex items-center justify-between text-xs shrink-0 font-mono"
+      className="px-4 py-1.5 flex items-center justify-between text-xs shrink-0"
       style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0' }}
     >
       {/* Connection status */}
@@ -57,11 +57,11 @@ export default function StatusBar() {
             <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-400 animate-ping opacity-50" />
           )}
         </div>
-        <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
+        <span className={`font-semibold ${connected ? 'text-emerald-600' : 'text-red-600'}`}>
           {connected ? 'CONNECTED' : 'OFFLINE'}
         </span>
         <span className="text-slate-300 mx-1">|</span>
-        <span className="text-slate-400 animate-fade-in" key={tickerIdx}>
+        <span className="text-slate-600 animate-fade-in" key={tickerIdx}>
           {TICKER_MESSAGES[tickerIdx]}
         </span>
       </div>
@@ -74,21 +74,21 @@ export default function StatusBar() {
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-40" style={{animationDuration:'2.5s'}} />
             </div>
-            <span className="text-gray-500">{model.label}</span>
+            <span className="text-slate-500">{model.label}</span>
           </div>
         ))}
       </div>
 
       {/* Demo mode badge */}
       {isDemo && (
-        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded tracking-widest bg-amber-500/15 text-amber-400 border border-amber-500/30">
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
           DEMO MODE
         </span>
       )}
 
       {/* Uptime */}
-      <div className="text-slate-400">
-        UPTIME <span className="text-slate-600">{formatUptime(uptime)}</span>
+      <div className="text-slate-500">
+        Uptime <span className="font-data text-slate-700">{formatUptime(uptime)}</span>
       </div>
     </div>
   );

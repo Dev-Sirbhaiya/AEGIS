@@ -37,11 +37,11 @@ export default function MonthlyReport() {
           type="month"
           value={month}
           onChange={(e) => setMonth(e.target.value)}
-          className="bg-gray-800 text-gray-200 border border-gray-600 rounded px-3 py-1.5 text-sm"
+          className="app-input text-sm"
         />
         <button
           onClick={fetchReport}
-          className="px-4 py-1.5 bg-aegis-cyan/15 hover:bg-aegis-cyan/25 border border-aegis-cyan/40 text-aegis-cyan text-xs font-mono font-bold rounded transition-all"
+          className="button-primary px-4 py-2 text-sm"
         >
           Load Report
         </button>
@@ -52,21 +52,21 @@ export default function MonthlyReport() {
       {!loading && report && (
         <div className="space-y-4">
           <div className="glass-panel p-4">
-            <h3 className="text-white font-semibold mb-2">Executive Summary</h3>
-            <p className="text-gray-300 text-sm">{report.executive_summary}</p>
+            <h3 className="text-slate-900 font-semibold mb-2">Executive Summary</h3>
+            <p className="text-slate-700 text-sm leading-6">{report.executive_summary}</p>
           </div>
 
           {chartData.length > 0 && (
             <div className="glass-panel p-4">
-              <h3 className="text-white font-semibold mb-4">Incidents by Severity</h3>
+              <h3 className="text-slate-900 font-semibold mb-4">Incidents by Severity</h3>
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={chartData}>
-                  <XAxis dataKey="name" stroke="#6B7280" tick={{ fill: '#9CA3AF', fontSize: 12 }} />
-                  <YAxis stroke="#6B7280" tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                  <XAxis dataKey="name" stroke="#94a3b8" tick={{ fill: '#64748b', fontSize: 12 }} />
+                  <YAxis stroke="#94a3b8" tick={{ fill: '#64748b', fontSize: 12 }} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: 6 }}
-                    labelStyle={{ color: '#F9FAFB' }}
-                    itemStyle={{ color: '#60A5FA' }}
+                    contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #dbe4f0', borderRadius: 12 }}
+                    labelStyle={{ color: '#0f172a' }}
+                    itemStyle={{ color: '#1d4ed8' }}
                   />
                   <Bar dataKey="count" fill="#4493f8" radius={[3, 3, 0, 0]} />
                 </BarChart>
@@ -76,11 +76,11 @@ export default function MonthlyReport() {
 
           {report.threat_landscape && (
             <div className="glass-panel p-4">
-              <h3 className="text-white font-semibold mb-2">Threat Landscape</h3>
-              <p className="text-gray-400 text-xs mb-2">{report.threat_landscape.threat_level_assessment}</p>
+              <h3 className="text-slate-900 font-semibold mb-2">Threat Landscape</h3>
+              <p className="text-slate-600 text-sm mb-3">{report.threat_landscape.threat_level_assessment}</p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <p className="text-gray-500 text-xs font-semibold mb-1">Primary Threats</p>
+                  <p className="section-eyebrow mb-2">Primary Threats</p>
                   <ul className="space-y-0.5">
                     {(report.threat_landscape.primary_threats ?? []).map((t: string, i: number) => (
                       <li key={i} className="text-gray-300 text-xs">• {t}</li>
@@ -88,7 +88,7 @@ export default function MonthlyReport() {
                   </ul>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs font-semibold mb-1">Emerging Concerns</p>
+                  <p className="section-eyebrow mb-2">Emerging Concerns</p>
                   <ul className="space-y-0.5">
                     {(report.threat_landscape.emerging_concerns ?? []).map((t: string, i: number) => (
                       <li key={i} className="text-yellow-400 text-xs">• {t}</li>
@@ -101,16 +101,16 @@ export default function MonthlyReport() {
 
           {report.strategic_recommendations && (
             <div className="glass-panel p-4">
-              <h3 className="text-white font-semibold mb-2">Strategic Recommendations</h3>
+              <h3 className="text-slate-900 font-semibold mb-2">Strategic Recommendations</h3>
               <div className="space-y-2">
                 {report.strategic_recommendations.map((r: any, i: number) => (
                   <div key={i} className="flex gap-3">
-                    <span className={`text-xs font-bold shrink-0 ${r.priority === 'High' ? 'text-red-400' : r.priority === 'Medium' ? 'text-yellow-400' : 'text-gray-400'}`}>
+                    <span className={`text-xs font-bold shrink-0 ${r.priority === 'High' ? 'text-red-600' : r.priority === 'Medium' ? 'text-amber-600' : 'text-slate-500'}`}>
                       {r.priority}
                     </span>
                     <div>
-                      <p className="text-gray-300 text-sm">{r.recommendation}</p>
-                      <p className="text-gray-500 text-xs">{r.rationale}</p>
+                      <p className="text-slate-800 text-sm">{r.recommendation}</p>
+                      <p className="text-slate-500 text-xs">{r.rationale}</p>
                     </div>
                   </div>
                 ))}
@@ -121,7 +121,7 @@ export default function MonthlyReport() {
       )}
 
       {!loading && !report && (
-        <p className="text-gray-500 text-sm text-center py-8">Select a month and load report</p>
+        <p className="text-slate-500 text-sm text-center py-8">Select a month and load report</p>
       )}
     </div>
   );

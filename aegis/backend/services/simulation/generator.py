@@ -69,17 +69,41 @@ class SimulationEngine:
                 return s
         return None
 
+    def _compress_event_timeline(self, events: List[Dict]) -> List[Dict]:
+        """Compress authored timelines into a 3-5 second demo cadence."""
+        if not events:
+            return []
+
+        compressed: List[Dict] = []
+        offset = 0
+
+        for index, event in enumerate(events):
+            cloned = dict(event)
+            if index == 0:
+                cloned["time_offset_seconds"] = 0
+            else:
+                offset += 3 + ((index - 1) % 3)
+                cloned["time_offset_seconds"] = offset
+            compressed.append(cloned)
+
+        return compressed
+
     async def start_session(self, scenario_id: str, user_id: str) -> SimulationSession:
         """Start a new simulation session and begin delivering events."""
         scenario = self.get_scenario(scenario_id)
         if not scenario:
             raise ValueError(f"Scenario not found: {scenario_id}")
 
+        scenario_data = dict(scenario)
+        scenario_data["events_timeline"] = self._compress_event_timeline(
+            scenario.get("events_timeline", [])
+        )
+
         session = SimulationSession(
             session_id=str(uuid.uuid4()),
             user_id=user_id,
             scenario_id=scenario_id,
-            scenario_data=scenario,
+            scenario_data=scenario_data,
             started_at=datetime.utcnow(),
             status="active",
         )

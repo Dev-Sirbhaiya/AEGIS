@@ -37,6 +37,22 @@ const SCENARIO_MEDIA: Record<string, { video: string; audio: string; label: stri
   SIM_010: { video: 'terminal_corridor.mp4',   audio: 'announcement_ding.wav', label: 'Active threat' },
 };
 
+function compressTimelineForPlayback(events: ScenarioEvent[]): ScenarioEvent[] {
+  if (events.length === 0) return [];
+
+  let offset = 0;
+  return events.map((event, index) => {
+    if (index === 0) {
+      return { ...event, time_offset_seconds: 0 };
+    }
+
+    // Keep the event feed moving for demos: each new event arrives in a
+    // human-paced 3-5 second window instead of waiting on long authoring gaps.
+    offset += 3 + ((index - 1) % 3);
+    return { ...event, time_offset_seconds: offset };
+  });
+}
+
 function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -74,18 +90,18 @@ function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive:
 
   return (
     <div className="glass-panel overflow-hidden">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-        <div className="flex items-center gap-2 text-sm text-gray-300">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-200">
+        <div className="flex items-center gap-2 text-sm text-slate-700">
           <Camera size={14} />
           <span>Scenario Feed</span>
-          <span className="text-[10px] text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded flex items-center gap-1">
+          <span className="text-[10px] text-red-700 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full flex items-center gap-1 font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
             LIVE
           </span>
         </div>
         <button
           onClick={toggleAudio}
-          className="flex items-center gap-1 text-xs text-gray-400 hover:text-white transition-colors px-2 py-1 rounded bg-gray-800 hover:bg-gray-700"
+          className="button-secondary px-2.5 py-1.5 text-xs"
         >
           {audioMuted ? <VolumeX size={12} /> : <Volume2 size={12} />}
           {audioMuted ? 'Unmute' : 'Mute'}
@@ -116,7 +132,7 @@ function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive:
         <div className="absolute bottom-2 left-2 text-white text-xs bg-black/60 px-2 py-0.5 rounded">
           SIM — {scenarioId}
         </div>
-        <div className="absolute bottom-2 right-2 text-amber-300 text-xs bg-black/70 border border-amber-500/40 px-2 py-0.5 rounded font-medium">
+        <div className="absolute bottom-2 right-2 text-amber-100 text-xs bg-slate-950/75 border border-amber-300/30 px-2 py-0.5 rounded font-medium">
           {media.label}
         </div>
       </div>
@@ -159,7 +175,7 @@ export default function SimDashboard() {
     }
 
     setDeliveredEvents([]);
-    scenario.events_timeline.forEach((event) => {
+    compressTimelineForPlayback(scenario.events_timeline).forEach((event) => {
       const timer = window.setTimeout(() => {
         setDeliveredEvents((previous) => [...previous, event]);
       }, event.time_offset_seconds * 1000);
@@ -174,7 +190,10 @@ export default function SimDashboard() {
 
   const handleStart = (sid: string, sc: Scenario) => {
     setSessionId(sid);
-    setScenario(sc);
+    setScenario({
+      ...sc,
+      events_timeline: compressTimelineForPlayback(sc.events_timeline ?? []),
+    });
     setSession(null);
     setElapsed(0);
     setActions([]);
@@ -263,7 +282,7 @@ export default function SimDashboard() {
         {session.debrief && <Debrief debrief={session.debrief} />}
         <button
           onClick={() => setPhase('select')}
-          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded"
+          className="button-primary w-full py-2.5"
         >
           Try Another Scenario
         </button>
@@ -275,20 +294,20 @@ export default function SimDashboard() {
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-white text-lg font-bold">{scenario?.title}</h2>
+          <h2 className="text-slate-900 text-2xl font-bold">{scenario?.title}</h2>
           <div className="flex items-center gap-3 mt-1">
             {scenario && <SeverityBadge level={scenario.severity_level} size="sm" />}
-            <span className="text-gray-400 text-sm capitalize">{scenario?.difficulty}</span>
+            <span className="text-slate-600 text-sm capitalize">{scenario?.difficulty}</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5 text-gray-400 text-sm">
+          <div className="flex items-center gap-1.5 text-slate-600 text-sm">
             <Clock size={14} />
-            <span className="font-mono text-white">{formatElapsed(elapsed)}</span>
+            <span className="font-data text-slate-900">{formatElapsed(elapsed)}</span>
           </div>
           <button
             onClick={handleEnd}
-            className="px-4 py-1.5 bg-red-700 hover:bg-red-800 text-white text-sm font-semibold rounded"
+            className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
           >
             End Scenario
           </button>
@@ -305,19 +324,19 @@ export default function SimDashboard() {
           <div className="glass-panel p-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 className="text-gray-200 text-sm font-semibold">Live Event Feed</h3>
-                <p className="text-gray-500 text-xs mt-0.5">
+                <h3 className="text-slate-900 text-sm font-semibold">Live Event Feed</h3>
+                <p className="text-slate-500 text-xs mt-0.5">
                   {localMode ? 'Local demo playback' : 'Backend event stream'}
                 </p>
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-red-300 bg-red-950/40 border border-red-800/60 px-2 py-1 rounded">
+              <div className="flex items-center gap-1.5 text-xs text-red-700 bg-red-50 border border-red-200 px-2 py-1 rounded-full font-semibold">
                 <Radio size={12} />
                 LIVE
               </div>
             </div>
 
             {deliveredEvents.length === 0 ? (
-              <div className="rounded border border-dashed border-gray-700 bg-gray-950/60 p-4 text-sm text-gray-500">
+              <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
                 Waiting for scenario events...
               </div>
             ) : (
@@ -325,17 +344,17 @@ export default function SimDashboard() {
                 {deliveredEvents.map((event, index) => {
                   const payload = event.event as Record<string, unknown>;
                   return (
-                    <div key={`${event.time_offset_seconds}-${index}`} className="rounded border border-gray-700 bg-gray-950/70 p-3">
+                    <div key={`${event.time_offset_seconds}-${index}`} className="rounded-xl border border-slate-200 bg-slate-50/90 p-3">
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2">
-                          <span className="rounded bg-blue-950/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-blue-300">
+                          <span className="rounded-full bg-blue-50 border border-blue-200 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-blue-700">
                             {event.modality}
                           </span>
-                          <span className="text-xs text-gray-400">{String(payload.location_id ?? 'Unknown location')}</span>
+                          <span className="text-xs text-slate-500 font-data">{String(payload.location_id ?? 'Unknown location')}</span>
                         </div>
-                        <span className="text-xs font-mono text-gray-500">+{event.time_offset_seconds}s</span>
+                        <span className="text-xs font-data text-slate-500">+{event.time_offset_seconds}s</span>
                       </div>
-                      <p className="mt-2 text-sm text-gray-200">{String(payload.details ?? 'No event details')}</p>
+                      <p className="mt-2 text-sm text-slate-800 leading-6">{String(payload.details ?? 'No event details')}</p>
                     </div>
                   );
                 })}
@@ -349,18 +368,18 @@ export default function SimDashboard() {
           <div className="grid grid-cols-2 gap-3">
             {ACTION_BUTTONS.map((action) => {
               const colors: Record<string, string> = {
-                dispatch: 'border-blue-800 text-blue-400 hover:bg-blue-950 hover:border-blue-600',
-                call:     'border-purple-800 text-purple-400 hover:bg-purple-950 hover:border-purple-600',
-                alert:    'border-amber-800 text-amber-400 hover:bg-amber-950 hover:border-amber-600',
-                lock:     'border-red-800 text-red-400 hover:bg-red-950 hover:border-red-600',
-                medical:  'border-emerald-800 text-emerald-400 hover:bg-emerald-950 hover:border-emerald-600',
-                evacuate: 'border-orange-800 text-orange-400 hover:bg-orange-950 hover:border-orange-600',
+                dispatch: 'border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300',
+                call:     'border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300',
+                alert:    'border-amber-200 text-amber-700 hover:bg-amber-50 hover:border-amber-300',
+                lock:     'border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300',
+                medical:  'border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300',
+                evacuate: 'border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300',
               };
               return (
                 <button
                   key={action.type}
                   onClick={() => handleAction(action.type, action.label)}
-                  className={`flex items-center gap-2 px-4 py-3 glass-panel rounded text-sm font-mono font-medium transition-all ${colors[action.type] ?? 'border-white/10 text-gray-400'}`}
+                  className={`flex items-center gap-2 px-4 py-3 glass-panel rounded-xl text-sm font-semibold transition-all ${colors[action.type] ?? 'border-slate-200 text-slate-500'}`}
                 >
                   <Zap size={13} className="opacity-70" />
                   {action.label}
@@ -370,12 +389,12 @@ export default function SimDashboard() {
           </div>
 
           {actions.length > 0 && (
-            <div className="glass-panel p-3">
-              <h3 className="text-gray-400 text-xs font-semibold uppercase mb-2">Actions Taken</h3>
+            <div className="glass-panel p-4">
+              <h3 className="section-eyebrow mb-2">Actions Taken</h3>
               <ul className="space-y-1">
                 {actions.map((action, index) => (
-                  <li key={index} className="text-gray-300 text-sm flex items-center gap-2">
-                    <span className="text-green-500 text-xs">OK</span>
+                  <li key={index} className="text-slate-700 text-sm flex items-center gap-2">
+                    <span className="inline-flex rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700 border border-green-200">OK</span>
                     {action}
                   </li>
                 ))}

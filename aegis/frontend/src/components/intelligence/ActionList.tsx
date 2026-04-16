@@ -41,7 +41,7 @@ export default function ActionList() {
 
   if (!incident || incident.recommendations.length === 0) {
     return (
-      <div className="text-slate-400 text-sm text-center py-4 font-mono">
+      <div className="text-slate-500 text-sm text-center py-4">
         NO RECOMMENDATIONS
       </div>
     );
@@ -59,7 +59,7 @@ export default function ActionList() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="text-slate-500 text-xs font-mono font-semibold uppercase tracking-widest mb-0.5">
+      <h3 className="section-eyebrow mb-0.5">
         Recommended Actions
       </h3>
       {incident.recommendations.map((rec, idx) => {
@@ -82,16 +82,16 @@ export default function ActionList() {
                   </span>
                   <div className="min-w-0">
                     <p className="text-slate-800 text-sm font-medium">{rec.action}</p>
-                    <p className="text-slate-500 text-xs mt-0.5 font-mono">{rec.who}</p>
+                    <p className="text-slate-500 text-xs mt-0.5">{rec.who}</p>
                     {rec.reasoning && (
-                      <p className="text-slate-400 text-xs mt-1 italic">{rec.reasoning}</p>
+                      <p className="text-slate-500 text-xs mt-1">{rec.reasoning}</p>
                     )}
                   </div>
                 </div>
                 <button
                   onClick={() => handleAction(rec, idx)}
                   disabled={done}
-                  className={`shrink-0 flex items-center gap-1 text-xs font-mono font-bold px-2.5 py-1.5 rounded border transition-all duration-200 ${
+                  className={`shrink-0 flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-full border transition-all duration-200 ${
                     done
                       ? 'bg-emerald-50 border-emerald-200 text-emerald-700 cursor-default'
                       : 'bg-transparent hover:bg-blue-50 border-slate-200 text-slate-600 hover:border-aegis-cyan hover:text-aegis-cyan hover:shadow-[0_0_8px_rgba(37,99,235,0.2)]'

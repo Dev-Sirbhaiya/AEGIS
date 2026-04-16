@@ -10,9 +10,9 @@ interface Props {
 }
 
 const DIFFICULTY_COLOR: Record<string, string> = {
-  beginner: 'text-green-400 bg-green-900/30 border-green-700',
-  intermediate: 'text-yellow-400 bg-yellow-900/30 border-yellow-700',
-  advanced: 'text-red-400 bg-red-900/30 border-red-700',
+  beginner: 'text-green-700 bg-green-50 border-green-200',
+  intermediate: 'text-amber-700 bg-amber-50 border-amber-200',
+  advanced: 'text-red-700 bg-red-50 border-red-200',
 };
 
 export default function ScenarioSelect({ onStart }: Props) {
@@ -54,37 +54,43 @@ export default function ScenarioSelect({ onStart }: Props) {
   }
 
   return (
-    <div>
-      <h2 className="text-white text-xl font-bold mb-1">Training Scenarios</h2>
-      <p className="text-gray-400 text-sm mb-2">Select a scenario to begin a simulation exercise.</p>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-slate-900 text-2xl font-bold mb-1">Training Scenarios</h2>
+        <p className="text-slate-600 text-sm max-w-2xl">
+          Choose a scenario to rehearse the response, review the event stream, and practice proportionate action-taking.
+        </p>
+      </div>
       {scenarios === demoScenarios && (
-        <div className="mb-6 inline-flex items-center gap-2 rounded border border-blue-700 bg-blue-950/40 px-3 py-1.5 text-xs text-blue-300">
+        <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700">
           Demo mode active: running from local scenario data
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {scenarios.map((scenario) => (
-          <div key={scenario.scenario_id} className="bg-gray-800 rounded-lg border border-gray-700 p-4 flex flex-col">
-            <div className="flex items-start justify-between gap-2 mb-2">
+          <div key={scenario.scenario_id} className="glass-panel card-hover p-5 flex flex-col gap-3">
+            <div className="flex items-start justify-between gap-3">
               <SeverityBadge level={scenario.severity_level} size="sm" />
-              <span className={`text-xs px-2 py-0.5 rounded border font-medium ${DIFFICULTY_COLOR[scenario.difficulty]}`}>
+              <span className={`text-xs px-2 py-1 rounded-full border font-semibold ${DIFFICULTY_COLOR[scenario.difficulty]}`}>
                 {scenario.difficulty}
               </span>
             </div>
 
-            <h3 className="text-white font-semibold text-sm mb-1">{scenario.title}</h3>
-            <p className="text-gray-400 text-xs flex-1 mb-3">{scenario.description}</p>
+            <div className="space-y-1">
+              <h3 className="text-slate-900 font-semibold text-base">{scenario.title}</h3>
+              <p className="text-slate-600 text-sm leading-6 flex-1">{scenario.description}</p>
+            </div>
 
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+            <div className="flex items-center justify-between text-sm text-slate-500">
               <span>{scenario.duration_minutes} min</span>
-              <span>{scenario.scenario_id}</span>
+              <span className="font-data text-xs">{scenario.scenario_id}</span>
             </div>
 
             <button
               onClick={() => handleStart(scenario)}
               disabled={starting === scenario.scenario_id}
-              className="w-full py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-semibold rounded transition-colors flex items-center justify-center gap-2"
+              className="button-primary w-full py-2.5 text-sm disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none"
             >
               {starting === scenario.scenario_id ? <><LoadingSpinner size="sm" /> Starting...</> : 'Start Scenario'}
             </button>

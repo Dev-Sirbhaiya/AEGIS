@@ -22,7 +22,7 @@ export default function LeftPanel() {
   };
 
   return (
-    <div className="flex flex-col gap-3 overflow-y-auto h-full pr-1">
+    <div className="flex flex-col gap-3 pr-1">
       {/* Camera view toggle tabs */}
       <div>
         <div className="flex gap-1 mb-2">

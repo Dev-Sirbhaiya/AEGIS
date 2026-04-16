@@ -47,18 +47,18 @@ export default function PredictiveMap() {
 
   if (data.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 text-sm">
+      <div className="text-center py-8 text-slate-500 text-sm">
         No prediction data available. Index the knowledge base and run reports first.
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="glass-panel p-4 overflow-x-auto">
       <div className="min-w-max">
         <div className="flex gap-1 mb-1 ml-32">
           {HOURS.map((h) => (
-            <div key={h} className="w-6 text-center text-gray-600 text-xs">
+            <div key={h} className="w-6 text-center text-slate-500 text-xs font-data">
               {h}
             </div>
           ))}
@@ -66,7 +66,7 @@ export default function PredictiveMap() {
 
         {locations.map((loc) => (
           <div key={loc} className="flex items-center gap-1 mb-1">
-            <div className="w-32 text-gray-400 text-xs truncate pr-2">{loc}</div>
+            <div className="w-32 text-slate-600 text-xs truncate pr-2 font-data">{loc}</div>
             {HOURS.map((h) => {
               const score = getScore(loc, h);
               return (
@@ -81,7 +81,7 @@ export default function PredictiveMap() {
         ))}
 
         <div className="flex items-center gap-2 mt-4">
-          <span className="text-gray-500 text-xs">Risk:</span>
+          <span className="text-slate-500 text-xs">Risk:</span>
           {[
             { color: 'bg-gray-800', label: 'None' },
             { color: 'bg-green-700', label: 'Low' },
@@ -90,8 +90,8 @@ export default function PredictiveMap() {
             { color: 'bg-red-700', label: 'Critical' },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-1">
-              <div className={`w-4 h-4 rounded-sm ${item.color} border border-gray-600`} />
-              <span className="text-gray-500 text-xs">{item.label}</span>
+              <div className={`w-4 h-4 rounded-sm ${item.color} border border-slate-300`} />
+              <span className="text-slate-500 text-xs">{item.label}</span>
             </div>
           ))}
         </div>

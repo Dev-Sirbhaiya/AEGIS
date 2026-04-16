@@ -46,8 +46,8 @@ function LoginPage() {
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-base)' }}>
       <div className="glass-panel p-8 w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-3xl font-bold tracking-widest font-mono text-gradient-cyan mb-1">AEGIS</div>
-          <div className="text-gray-500 text-xs font-mono tracking-wider">ADAPTIVE SECURITY INTELLIGENCE</div>
+          <div className="text-3xl font-bold tracking-[0.18em] text-gradient-cyan mb-1">AEGIS</div>
+          <div className="section-eyebrow">Adaptive Security Intelligence</div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-3">
@@ -56,19 +56,19 @@ function LoginPage() {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-aegis-base text-white border border-aegis-border rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 transition-all placeholder:text-gray-600"
+            className="app-input w-full text-sm"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-aegis-base text-white border border-aegis-border rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 transition-all placeholder:text-gray-600"
+            className="app-input w-full text-sm"
           />
-          {error && <p className="text-red-400 text-xs font-mono">{error}</p>}
+          {error && <p className="text-red-600 text-sm">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2.5 font-mono font-bold text-sm rounded tracking-wider transition-all duration-200 text-aegis-cyan border border-aegis-cyan/40 bg-aegis-cyan/10 hover:bg-aegis-cyan/20"
+            className="button-primary w-full py-2.5 text-sm"
           >
             Sign In
           </button>
@@ -76,18 +76,18 @@ function LoginPage() {
 
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 border-t border-aegis-border" />
-          <span className="text-[10px] font-mono text-gray-600">OR</span>
+          <span className="section-eyebrow">Or</span>
           <div className="flex-1 border-t border-aegis-border" />
         </div>
 
         <button
           onClick={handleDemoMode}
-          className="mt-3 w-full py-2 font-mono text-xs rounded tracking-wider transition-all duration-200 text-gray-400 border border-aegis-border hover:border-gray-500 hover:text-gray-300"
+          className="button-secondary mt-3 w-full py-2 text-sm"
         >
           Enter Demo Mode
         </button>
 
-        <div className="mt-6 text-center text-[10px] font-mono text-gray-700">
+        <div className="mt-6 text-center text-xs text-slate-500">
           CERTIS GROUP · CHANGI AIRPORT · SOC-SECURE
         </div>
       </div>
@@ -100,15 +100,15 @@ function ReportsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex gap-1 px-6 pt-4 border-b border-white/5 pb-0">
+      <div className="flex gap-1 px-6 pt-4 border-b border-slate-200 pb-0">
         {(['daily', 'monthly', 'predictive'] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-4 py-2 text-xs font-mono font-medium border-b-2 transition-all tracking-wider ${
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-all ${
               tab === t
                 ? 'border-aegis-cyan text-aegis-cyan'
-                : 'border-transparent text-gray-500 hover:text-gray-300'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
             {t === 'predictive' ? 'PREDICTIVE' : t.toUpperCase()}
@@ -126,9 +126,9 @@ function ReportsPage() {
 
 function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'var(--bg-base)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg-base)' }}>
       <Navbar />
-      <main className="flex-1 overflow-hidden min-h-0">
+      <main className="flex-1 min-h-0">
         {children}
       </main>
       <StatusBar />

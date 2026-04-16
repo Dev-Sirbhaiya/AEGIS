@@ -23,20 +23,20 @@ function scoreColor(pct: number) {
 
 export default function ScoreCard({ total, breakdown, responseTime }: Props) {
   const grade = total >= 90 ? 'A' : total >= 75 ? 'B' : total >= 55 ? 'C' : 'D';
-  const gradeColor = grade === 'A' ? 'text-green-400' : grade === 'B' ? 'text-blue-400' : grade === 'C' ? 'text-yellow-400' : 'text-red-400';
+  const gradeColor = grade === 'A' ? 'text-green-700' : grade === 'B' ? 'text-blue-700' : grade === 'C' ? 'text-amber-700' : 'text-red-700';
 
   return (
-    <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
+    <div className="glass-panel p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-white text-lg font-bold">Score Report</h2>
+          <h2 className="text-slate-900 text-lg font-bold">Score Report</h2>
           {responseTime && (
-            <p className="text-gray-400 text-sm">First response: {responseTime}s</p>
+            <p className="text-slate-600 text-sm">First response: <span className="font-data">{responseTime}s</span></p>
           )}
         </div>
         <div className="text-center">
-          <div className={`text-4xl font-bold ${gradeColor}`}>{grade}</div>
-          <div className="text-gray-400 text-sm">{total}/100</div>
+          <div className={`text-4xl font-bold font-data ${gradeColor}`}>{grade}</div>
+          <div className="text-slate-600 text-sm font-data">{total}/100</div>
         </div>
       </div>
 
@@ -48,10 +48,10 @@ export default function ScoreCard({ total, breakdown, responseTime }: Props) {
             return (
               <div key={key}>
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-gray-400">{label}</span>
-                  <span className="text-gray-300">{value}/{max}</span>
+                  <span className="text-slate-600">{label}</span>
+                  <span className="text-slate-700 font-data">{value}/{max}</span>
                 </div>
-                <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all ${scoreColor(pct)}`}
                     style={{ width: `${pct}%` }}

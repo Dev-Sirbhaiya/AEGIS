@@ -37,12 +37,12 @@ export default function Dashboard() {
   return (
     <div
       ref={containerRef}
-      className="flex flex-1 overflow-hidden select-none min-h-0"
+      className="flex flex-1 select-none items-start"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      <div className="overflow-hidden h-full p-3" style={{ width: `${splitRatio}%` }}>
+      <div className="p-3" style={{ width: `${splitRatio}%` }}>
         <LeftPanel />
       </div>
 
@@ -52,7 +52,7 @@ export default function Dashboard() {
         onMouseDown={handleMouseDown}
       />
 
-      <div className="flex-1 overflow-hidden h-full p-3">
+      <div className="flex-1 p-3">
         <RightPanel />
       </div>
     </div>

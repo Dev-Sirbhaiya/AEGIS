@@ -11,9 +11,9 @@ export default function RightPanel() {
   const hasActiveCall = activeCalls.length > 0;
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col gap-3">
       {/* Intelligence section */}
-      <div className="flex-1 overflow-y-auto pr-1 pb-3 space-y-3 min-h-0">
+      <div className="pr-1 space-y-3">
         <SituationCard />
         <ActionList />
         <ContactCard />
@@ -22,7 +22,7 @@ export default function RightPanel() {
 
       {/* Voice panel — shown when calls are active */}
       {hasActiveCall && (
-        <div className="flex flex-col border-t border-slate-100 mt-2 pt-2 min-h-0 max-h-64">
+        <div className="flex flex-col border-t border-slate-100 pt-2">
           <div className="px-3 py-1.5 text-xs text-slate-500 font-mono font-semibold uppercase tracking-widest">
             Voice Agent
           </div>

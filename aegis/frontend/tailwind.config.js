@@ -4,16 +4,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        sans: ['Public Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
         aegis: {
-          base: '#f8fafc',
+          base: '#f4f7fb',
           panel: '#ffffff',
-          surface: 'rgba(37,99,235,0.04)',
-          border: '#e2e8f0',
-          active: 'rgba(37,99,235,0.4)',
-          cyan: '#2563eb',
+          surface: '#eef4ff',
+          border: '#dbe4f0',
+          active: 'rgba(29,78,216,0.24)',
+          cyan: '#1d4ed8',
         },
         severity: {
           critical: '#dc2626',

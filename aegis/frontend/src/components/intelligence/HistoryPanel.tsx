@@ -21,7 +21,7 @@ export default function HistoryPanel() {
 
   return (
     <div className="mt-3">
-      <h3 className="text-slate-500 text-xs font-mono font-semibold uppercase tracking-widest mb-2">
+      <h3 className="section-eyebrow mb-2">
         Similar Past Incidents
       </h3>
       <div className="flex flex-col gap-1.5">
@@ -29,11 +29,11 @@ export default function HistoryPanel() {
           <div key={incident.id} className="glass-panel px-3 py-2">
             <div className="flex items-center gap-2 mb-1">
               <SeverityBadge level={incident.severity_level} size="sm" />
-              <span className="text-slate-600 text-xs font-mono">{incident.location_id}</span>
-              <span className="text-slate-400 text-xs font-mono ml-auto">{timeAgo(incident.created_at)}</span>
+              <span className="text-slate-600 text-xs font-data">{incident.location_id}</span>
+              <span className="text-slate-400 text-xs font-data ml-auto">{timeAgo(incident.created_at)}</span>
             </div>
             {incident.resolution_notes && (
-              <p className="text-slate-500 text-xs italic">{incident.resolution_notes}</p>
+              <p className="text-slate-500 text-xs">{incident.resolution_notes}</p>
             )}
           </div>
         ))}

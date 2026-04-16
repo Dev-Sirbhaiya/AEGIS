@@ -17,7 +17,7 @@ export default function SeverityBadge({ level, showLabel = true, size = 'md' }: 
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded font-mono font-semibold border ${sizeClass} ${config.textColor} ${config.bgColor} ${config.borderColor} ${config.glowClass}`}
+      className={`inline-flex items-center gap-1 rounded-full font-semibold border ${sizeClass} ${config.textColor} ${config.bgColor} ${config.borderColor} ${config.glowClass}`}
     >
       <span>{config.icon}</span>
       {showLabel && <span>L{level} {config.name}</span>}
