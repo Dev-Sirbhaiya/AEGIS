@@ -4,23 +4,23 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
         aegis: {
-          base: '#080c18',
-          panel: 'rgba(14,20,40,0.85)',
-          surface: 'rgba(255,255,255,0.04)',
-          border: 'rgba(0,212,255,0.15)',
-          active: 'rgba(0,212,255,0.5)',
-          cyan: '#00d4ff',
+          base: '#0c0a07',
+          panel: 'rgba(20,16,11,0.92)',
+          surface: 'rgba(232,160,32,0.04)',
+          border: 'rgba(232,160,32,0.12)',
+          active: 'rgba(232,160,32,0.48)',
+          cyan: '#e8a020',
         },
         severity: {
-          critical: '#ef4444',
-          high: '#f97316',
-          medium: '#f59e0b',
-          low: '#84cc16',
-          minimal: '#10b981',
+          critical: '#cc3c3c',
+          high: '#c94a18',
+          medium: '#d4891a',
+          low: '#7faa5e',
+          minimal: '#3d7055',
         },
       },
       animation: {

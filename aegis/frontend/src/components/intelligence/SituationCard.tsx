@@ -35,7 +35,7 @@ function ArcGauge({ score, level }: { score: number; level: number }) {
           transform={`rotate(-90 ${cx} ${cy})`}
           style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1)', filter: `drop-shadow(0 0 4px ${color})` }}
         />
-        <text x={cx} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fill={color} fontSize="12" fontFamily="JetBrains Mono, monospace" fontWeight="600">
+        <text x={cx} y={cy + 1} textAnchor="middle" dominantBaseline="middle" fill={color} fontSize="12" fontFamily="IBM Plex Mono, monospace" fontWeight="600">
           {Math.round(score * 100)}%
         </text>
       </svg>

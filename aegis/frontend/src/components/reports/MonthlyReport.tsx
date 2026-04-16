@@ -68,7 +68,7 @@ export default function MonthlyReport() {
                     labelStyle={{ color: '#F9FAFB' }}
                     itemStyle={{ color: '#60A5FA' }}
                   />
-                  <Bar dataKey="count" fill="#00d4ff" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="count" fill="#e8a020" radius={[3, 3, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

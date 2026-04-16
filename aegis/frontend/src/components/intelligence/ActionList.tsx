@@ -9,7 +9,7 @@ const ACTION_COLORS: Record<string, { strip: string; icon: React.ReactNode; badg
   call:     { strip: '#a855f7', icon: <Radio size={13} />,        badge: 'text-purple-400 bg-purple-950 border-purple-800' },
   alert:    { strip: '#f59e0b', icon: <AlertCircle size={13} />,  badge: 'text-amber-400 bg-amber-950 border-amber-800'  },
   lock:     { strip: '#ef4444', icon: <Lock size={13} />,         badge: 'text-red-400 bg-red-950 border-red-800'      },
-  default:  { strip: '#00d4ff', icon: <Zap size={13} />,          badge: 'text-cyan-400 bg-cyan-950 border-cyan-800'   },
+  default:  { strip: '#e8a020', icon: <Zap size={13} />,          badge: 'text-amber-400 bg-amber-950 border-amber-800'  },
 };
 
 function inferActionType(action: string): string {
@@ -80,7 +80,7 @@ export default function ActionList() {
                   className={`shrink-0 flex items-center gap-1 text-xs font-mono font-bold px-2.5 py-1.5 rounded border transition-all duration-200 ${
                     done
                       ? 'bg-emerald-950 border-emerald-700 text-emerald-400 cursor-default'
-                      : 'bg-transparent hover:bg-white/5 border-white/20 text-white hover:border-aegis-cyan hover:text-aegis-cyan hover:shadow-[0_0_8px_rgba(0,212,255,0.3)]'
+                      : 'bg-transparent hover:bg-white/5 border-white/20 text-white hover:border-aegis-cyan hover:text-aegis-cyan hover:shadow-[0_0_8px_rgba(232,160,32,0.35)]'
                   }`}
                 >
                   {done ? <><CheckCircle size={12} /> DONE</> : <>{style.icon} ACT</>}

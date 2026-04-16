@@ -68,10 +68,12 @@ export default function AudioWaveform() {
   // type, so the recommendations panel context is reinforced via sound.
   const incidentMedia = useMemo(() => {
     if (!selectedIncident) return null;
+    // Match strictly on location_id (zone_id like "T2_GATE_B4"). Don't compare
+    // `zone` ("public"/"airside"/"restricted") — that's a category and would
+    // light up every public camera for any public-zone incident.
     const sameZone =
       !selectedCamera ||
-      selectedCamera.location_id === selectedIncident.location_id ||
-      selectedCamera.zone === selectedIncident.zone;
+      selectedCamera.location_id === selectedIncident.location_id;
     if (!sameZone) return null;
     return getIncidentMedia(selectedIncident);
   }, [selectedIncident, selectedCamera]);
@@ -138,16 +140,18 @@ export default function AudioWaveform() {
 
     const draw = () => {
       const { width, height } = canvas;
-      ctx.fillStyle = 'rgba(8,12,24,0.8)';
+      ctx.fillStyle = 'rgba(12,10,7,0.85)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.strokeStyle = '#00d4ff';
+      ctx.strokeStyle = '#e8a020';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
 
       const analyser = analyserRef.current;
       if (analyser && playing) {
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        // getByteTimeDomainData expects fftSize samples (not frequencyBinCount,
+        // which is fftSize/2). Wrong size renders the waveform at half resolution.
+        const dataArray = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(dataArray);
         const sliceWidth = width / dataArray.length;
         for (let i = 0; i < dataArray.length; i++) {

@@ -1,15 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bell, Shield, User } from 'lucide-react';
+import { Shield, User } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
-import { useIncidentStore } from '../../stores/incidentStore';
-import ThreatLevelGauge from '../shared/ThreatLevelGauge';
 
 export default function Navbar() {
   const { user, logout } = useAuthStore();
-  const incidents = useIncidentStore((s) => s.incidents);
   const location = useLocation();
-
-  const activeIncidents = incidents.filter((i) => i.status === 'active').length;
 
   const navLinks = [
     { to: '/', label: 'Incidents' },
@@ -18,7 +13,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="glass-panel rounded-none border-x-0 border-t-0 px-4 py-2 flex items-center justify-between shrink-0" style={{borderBottom:'1px solid rgba(0,212,255,0.2)'}}>
+    <nav className="glass-panel rounded-none border-x-0 border-t-0 px-4 py-2 flex items-center justify-between shrink-0" style={{borderBottom:'1px solid rgba(232,160,32,0.18)'}}>
       {/* Brand */}
       <div className="flex items-center gap-3">
         <div className="relative">
@@ -47,15 +42,6 @@ export default function Navbar() {
 
       {/* Right side */}
       <div className="flex items-center gap-3">
-        <ThreatLevelGauge />
-        <div className="relative">
-          <Bell size={16} className="text-gray-400" />
-          {activeIncidents > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[9px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold glow-red">
-              {activeIncidents > 9 ? '9+' : activeIncidents}
-            </span>
-          )}
-        </div>
         <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
           <User size={14} />
           <span>{user?.username ?? 'operator'}</span>

@@ -16,7 +16,7 @@ const LOCATION_COORDS: Record<string, { x: number; y: number }> = {
 };
 
 const SEVERITY_COLORS: Record<number, string> = {
-  1: '#10b981', 2: '#84cc16', 3: '#f59e0b', 4: '#f97316', 5: '#ef4444',
+  1: '#3d7055', 2: '#7faa5e', 3: '#d4891a', 4: '#c94a18', 5: '#cc3c3c',
 };
 
 export default function TerminalMap() {
@@ -39,45 +39,45 @@ export default function TerminalMap() {
         <svg
           viewBox="0 0 470 230"
           className="w-full"
-          style={{ background: 'rgba(8,12,24,0.6)', borderRadius: '4px' }}
+          style={{ background: 'rgba(12,10,7,0.7)', borderRadius: '4px' }}
         >
           <defs>
             <pattern id="mapgrid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,212,255,0.04)" strokeWidth="0.5" />
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(232,160,32,0.05)" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="470" height="230" fill="url(#mapgrid)" />
 
           {/* Connecting corridors */}
-          <rect x="84"  y="112" width="75"  height="10" rx="2" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.15)" strokeWidth="0.5" />
-          <rect x="224" y="88"  width="28"  height="8"  rx="2" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.15)" strokeWidth="0.5" />
-          <rect x="368" y="144" width="8"   height="35" rx="2" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.15)" strokeWidth="0.5" />
+          <rect x="84"  y="112" width="75"  height="10" rx="2" fill="rgba(232,160,32,0.07)" stroke="rgba(232,160,32,0.14)" strokeWidth="0.5" />
+          <rect x="224" y="88"  width="28"  height="8"  rx="2" fill="rgba(232,160,32,0.07)" stroke="rgba(232,160,32,0.14)" strokeWidth="0.5" />
+          <rect x="368" y="144" width="8"   height="35" rx="2" fill="rgba(232,160,32,0.07)" stroke="rgba(232,160,32,0.14)" strokeWidth="0.5" />
 
           {/* Terminal 1 */}
-          <rect x="10" y="72" width="74" height="130" rx="6" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.25)" strokeWidth="1" />
-          <text x="47" y="210" textAnchor="middle" fill="rgba(0,212,255,0.5)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="600">T1</text>
+          <rect x="10" y="72" width="74" height="130" rx="6" fill="rgba(232,160,32,0.05)" stroke="rgba(232,160,32,0.22)" strokeWidth="1" />
+          <text x="47" y="210" textAnchor="middle" fill="rgba(232,160,32,0.45)" fontSize="9" fontFamily="IBM Plex Mono, monospace" fontWeight="600">T1</text>
 
           {/* Jewel */}
-          <circle cx="128" cy="150" r="42" fill="rgba(0,212,255,0.04)" stroke="rgba(0,212,255,0.2)" strokeWidth="1" strokeDasharray="3 3" />
-          <text x="128" y="200" textAnchor="middle" fill="rgba(0,212,255,0.4)" fontSize="8" fontFamily="JetBrains Mono, monospace">JEWEL</text>
+          <circle cx="128" cy="150" r="42" fill="rgba(232,160,32,0.03)" stroke="rgba(232,160,32,0.18)" strokeWidth="1" strokeDasharray="3 3" />
+          <text x="128" y="200" textAnchor="middle" fill="rgba(232,160,32,0.35)" fontSize="8" fontFamily="IBM Plex Mono, monospace">JEWEL</text>
 
           {/* Terminal 2 */}
-          <rect x="159" y="48" width="66" height="104" rx="4" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.25)" strokeWidth="1" />
-          <text x="192" y="162" textAnchor="middle" fill="rgba(0,212,255,0.5)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="600">T2</text>
+          <rect x="159" y="48" width="66" height="104" rx="4" fill="rgba(232,160,32,0.05)" stroke="rgba(232,160,32,0.22)" strokeWidth="1" />
+          <text x="192" y="162" textAnchor="middle" fill="rgba(232,160,32,0.45)" fontSize="9" fontFamily="IBM Plex Mono, monospace" fontWeight="600">T2</text>
 
           {/* Terminal 3 */}
-          <rect x="252" y="38" width="118" height="130" rx="4" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.25)" strokeWidth="1" />
-          <text x="311" y="178" textAnchor="middle" fill="rgba(0,212,255,0.5)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="600">T3</text>
+          <rect x="252" y="38" width="118" height="130" rx="4" fill="rgba(232,160,32,0.05)" stroke="rgba(232,160,32,0.22)" strokeWidth="1" />
+          <text x="311" y="178" textAnchor="middle" fill="rgba(232,160,32,0.45)" fontSize="9" fontFamily="IBM Plex Mono, monospace" fontWeight="600">T3</text>
 
           {/* Terminal 4 */}
-          <rect x="376" y="144" width="80" height="68" rx="4" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.25)" strokeWidth="1" />
-          <text x="416" y="220" textAnchor="middle" fill="rgba(0,212,255,0.5)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="600">T4</text>
+          <rect x="376" y="144" width="80" height="68" rx="4" fill="rgba(232,160,32,0.05)" stroke="rgba(232,160,32,0.22)" strokeWidth="1" />
+          <text x="416" y="220" textAnchor="middle" fill="rgba(232,160,32,0.45)" fontSize="9" fontFamily="IBM Plex Mono, monospace" fontWeight="600">T4</text>
 
           {/* Incident markers */}
           {activeIncidents.map((incident) => {
             const pos = LOCATION_COORDS[incident.location_id];
             if (!pos) return null;
-            const color = SEVERITY_COLORS[incident.severity_level] ?? '#ef4444';
+            const color = SEVERITY_COLORS[incident.severity_level] ?? '#cc3c3c';
             const isSelected = selectedIncident?.id === incident.id;
 
             return (
@@ -105,7 +105,7 @@ export default function TerminalMap() {
           })}
 
           {activeIncidents.length === 0 && (
-            <text x="235" y="115" textAnchor="middle" fill="rgba(0,212,255,0.2)" fontSize="10" fontFamily="JetBrains Mono, monospace">
+            <text x="235" y="115" textAnchor="middle" fill="rgba(232,160,32,0.2)" fontSize="10" fontFamily="IBM Plex Mono, monospace">
               ALL CLEAR
             </text>
           )}

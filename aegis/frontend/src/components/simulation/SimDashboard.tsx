@@ -40,7 +40,15 @@ function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive:
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioMuted, setAudioMuted] = useState(true);
+  const [now, setNow] = useState(new Date());
   const media = SCENARIO_MEDIA[scenarioId] || SCENARIO_MEDIA.SIM_001;
+
+  // Live clock — without this, the timestamp overlay in the video frame is
+  // captured at mount and never updates.
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     if (!isActive) return;
@@ -79,7 +87,7 @@ function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive:
           className="flex items-center gap-1 text-xs text-gray-400 hover:text-white transition-colors px-2 py-1 rounded bg-gray-800 hover:bg-gray-700"
         >
           {audioMuted ? <VolumeX size={12} /> : <Volume2 size={12} />}
-          {audioMuted ? 'Unmute' : 'Muted'}
+          {audioMuted ? 'Unmute' : 'Mute'}
         </button>
       </div>
       <div className="relative aspect-video bg-black">
@@ -102,7 +110,7 @@ function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive:
           REC
         </div>
         <div className="absolute top-2 right-2 text-white text-xs bg-black/60 px-2 py-0.5 rounded font-mono">
-          {new Date().toLocaleTimeString()}
+          {now.toLocaleTimeString()}
         </div>
         <div className="absolute bottom-2 left-2 text-white text-xs bg-black/60 px-2 py-0.5 rounded">
           SIM — {scenarioId}

@@ -33,7 +33,7 @@ function LoginPage() {
         ))}
       </div>
 
-      <div className="glass-panel p-8 w-full max-w-sm relative z-10" style={{ boxShadow: '0 0 40px rgba(0,212,255,0.08)' }}>
+      <div className="glass-panel p-8 w-full max-w-sm relative z-10" style={{ boxShadow: '0 0 40px rgba(232,160,32,0.08)' }}>
         <div className="text-center mb-8">
           <div className="flex justify-center mb-3">
             <div className="relative">
@@ -66,7 +66,7 @@ function LoginPage() {
           {error && <p className="text-red-400 text-xs font-mono">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2.5 font-mono font-bold text-sm rounded tracking-widest transition-all duration-200 text-aegis-cyan border border-aegis-cyan/40 bg-aegis-cyan/10 hover:bg-aegis-cyan/20 hover:border-aegis-cyan/70 hover:shadow-[0_0_16px_rgba(0,212,255,0.3)]"
+            className="w-full py-2.5 font-mono font-bold text-sm rounded tracking-widest transition-all duration-200 text-aegis-cyan border border-aegis-cyan/40 bg-aegis-cyan/10 hover:bg-aegis-cyan/20 hover:border-aegis-cyan/70 hover:shadow-[0_0_16px_rgba(232,160,32,0.35)]"
           >
             AUTHENTICATE
           </button>

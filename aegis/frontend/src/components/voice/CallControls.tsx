@@ -39,7 +39,7 @@ export default function CallControls() {
       <button
         onClick={handleTakeover}
         disabled={loading === 'takeover'}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-aegis-cyan/20 hover:bg-aegis-cyan/30 border border-aegis-cyan/50 text-aegis-cyan text-xs font-mono font-bold rounded transition-all hover:shadow-[0_0_8px_rgba(0,212,255,0.4)] disabled:opacity-50"
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-aegis-cyan/20 hover:bg-aegis-cyan/30 border border-aegis-cyan/50 text-aegis-cyan text-xs font-mono font-bold rounded transition-all hover:shadow-[0_0_8px_rgba(232,160,32,0.45)] disabled:opacity-50"
       >
         <UserCheck size={14} />
         TAKE OVER

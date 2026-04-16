@@ -44,7 +44,7 @@ export default function StatusBar() {
   return (
     <div
       className="px-4 py-1 flex items-center justify-between text-xs shrink-0 font-mono"
-      style={{ background: 'rgba(8,12,24,0.95)', borderTop: '1px solid rgba(0,212,255,0.12)' }}
+      style={{ background: 'rgba(12,10,7,0.96)', borderTop: '1px solid rgba(232,160,32,0.12)' }}
     >
       {/* Connection status */}
       <div className="flex items-center gap-2">

@@ -48,7 +48,7 @@ export default function Dashboard() {
 
       <div
         className="w-1 hover:bg-aegis-cyan/40 cursor-col-resize transition-colors shrink-0"
-        style={{ background: 'rgba(0,212,255,0.12)' }}
+        style={{ background: 'rgba(232,160,32,0.14)' }}
         onMouseDown={handleMouseDown}
       />
 
