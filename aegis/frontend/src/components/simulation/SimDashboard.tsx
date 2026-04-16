@@ -20,20 +20,21 @@ const ACTION_BUTTONS = [
   { type: 'evacuate', label: 'Evacuate Area' },
 ];
 
-// Each scenario maps to incident-specific CCTV-style footage + matching ambience.
-// The video reflects what the SOC operator would actually be seeing on the camera
-// when this incident type fires, so the recommendations panel feels grounded.
+// Each scenario maps to zone-appropriate CCTV footage from the same pool used
+// on the main dashboard. This matches what a SOC operator would actually see
+// on the feed for the zone where the incident fires — more authentic than
+// cinematic stock footage. The label badge names the incident type explicitly.
 const SCENARIO_MEDIA: Record<string, { video: string; audio: string; label: string }> = {
-  SIM_001: { video: 'sim_unauthorized_access.mp4', audio: 'announcement_ding.wav', label: 'Unauthorized airside access' },
-  SIM_002: { video: 'sim_unattended_baggage.mp4', audio: 'departures_hall.wav', label: 'Unattended baggage' },
-  SIM_003: { video: 'sim_medical_emergency.mp4', audio: 'people_ambience.wav', label: 'Medical emergency' },
-  SIM_004: { video: 'sim_lift_breakdown.mp4', audio: 'people_ambience.wav', label: 'Lift breakdown' },
-  SIM_005: { video: 'sim_aggressive_passenger.mp4', audio: 'terminal_crowd.wav', label: 'Aggressive passenger' },
-  SIM_006: { video: 'sim_fire_alarm.mp4', audio: 'announcement_ding.wav', label: 'Fire alarm' },
-  SIM_007: { video: 'sim_suspicious_package.mp4', audio: 'departures_hall.wav', label: 'Suspicious package' },
-  SIM_008: { video: 'sim_crowd_surge.mp4', audio: 'terminal_crowd.wav', label: 'Crowd surge' },
-  SIM_009: { video: 'sim_drone_intrusion.mp4', audio: 'jet_arrival.wav', label: 'Drone intrusion' },
-  SIM_010: { video: 'sim_active_threat.mp4', audio: 'announcement_ding.wav', label: 'Active threat' },
+  SIM_001: { video: 'boarding_gate.mp4',       audio: 'announcement_ding.wav', label: 'Unauthorized airside access' },
+  SIM_002: { video: 'luggage_conveyor.mp4',    audio: 'departures_hall.wav',   label: 'Unattended baggage' },
+  SIM_003: { video: 'arrival_hall.mp4',        audio: 'people_ambience.wav',   label: 'Medical emergency' },
+  SIM_004: { video: 'rolling_corridor.mp4',    audio: 'people_ambience.wav',   label: 'Lift breakdown' },
+  SIM_005: { video: 'checkin_counter.mp4',     audio: 'terminal_crowd.wav',    label: 'Aggressive passenger' },
+  SIM_006: { video: 'arrival_hall.mp4',        audio: 'announcement_ding.wav', label: 'Fire alarm — retail' },
+  SIM_007: { video: 'security_screening.mp4',  audio: 'departures_hall.wav',   label: 'Suspicious package' },
+  SIM_008: { video: 'checkin_counter.mp4',     audio: 'terminal_crowd.wav',    label: 'Crowd surge' },
+  SIM_009: { video: 'boarding_gate.mp4',       audio: 'jet_arrival.wav',       label: 'Drone intrusion' },
+  SIM_010: { video: 'terminal_corridor.mp4',   audio: 'announcement_ding.wav', label: 'Active threat' },
 };
 
 function SimMediaPanel({ scenarioId, isActive }: { scenarioId: string; isActive: boolean }) {

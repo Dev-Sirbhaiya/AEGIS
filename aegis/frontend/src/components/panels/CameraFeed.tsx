@@ -62,12 +62,12 @@ export default function CameraFeed({ onSwitchGrid }: Props) {
       style={hasCritical ? { borderColor: 'rgba(239,68,68,0.5)' } : undefined}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-        <div className="flex items-center gap-2 text-sm text-gray-300">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
+        <div className="flex items-center gap-2 text-sm text-slate-600">
           <Camera size={13} className="text-aegis-cyan" />
           <span className="font-mono text-xs tracking-wider">CCTV FEED</span>
           {incidentMedia && (
-            <span className="text-[10px] text-amber-300 bg-amber-500/15 border border-amber-500/40 px-1.5 py-0.5 rounded flex items-center gap-1 font-mono">
+            <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded flex items-center gap-1 font-mono">
               <AlertTriangle size={10} />
               {incidentMedia.label}
             </span>
@@ -75,7 +75,7 @@ export default function CameraFeed({ onSwitchGrid }: Props) {
         </div>
         <div className="flex items-center gap-2">
           <select
-            className="bg-transparent text-gray-300 text-xs border border-white/10 rounded px-2 py-1 focus:border-aegis-cyan focus:outline-none font-mono"
+            className="bg-white text-slate-700 text-xs border border-slate-200 rounded px-2 py-1 focus:border-aegis-cyan focus:outline-none font-mono"
             value={selectedCamera?.camera_id ?? ''}
             onChange={(e) => {
               const cam = cameras.find((c) => c.camera_id === e.target.value);
@@ -92,7 +92,7 @@ export default function CameraFeed({ onSwitchGrid }: Props) {
           {onSwitchGrid && (
             <button
               onClick={onSwitchGrid}
-              className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-aegis-cyan transition-colors"
+              className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-aegis-cyan transition-colors"
               title="Grid view"
             >
               <Grid2x2 size={14} />

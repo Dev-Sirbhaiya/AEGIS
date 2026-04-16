@@ -33,7 +33,7 @@ export default function TerminalMap() {
 
   return (
     <div className="glass-panel overflow-hidden">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
         <span className="text-xs font-mono text-gray-400 tracking-wider">TERMINAL MAP — CHANGI AIRPORT</span>
         <span className="text-[10px] font-mono text-gray-600">SG/WSSS</span>
       </div>
@@ -41,7 +41,7 @@ export default function TerminalMap() {
         <svg
           viewBox="0 0 470 230"
           className="w-full"
-          style={{ background: '#0d1117', borderRadius: '4px' }}
+          style={{ background: '#f1f5f9', borderRadius: '4px' }}
         >
           <defs>
             <pattern id="mapgrid" width="20" height="20" patternUnits="userSpaceOnUse">

@@ -34,7 +34,7 @@ export default function CallControls() {
   };
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 border-t border-white/5">
+    <div className="flex items-center gap-2 px-3 py-2 border-t border-slate-100">
       <button
         onClick={handleTakeover}
         disabled={loading === 'takeover'}

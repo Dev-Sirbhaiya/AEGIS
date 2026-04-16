@@ -57,7 +57,7 @@ function IncidentRow({
     <button
       onClick={onClick}
       className={`w-full text-left rounded transition-all duration-200 overflow-hidden ${
-        selected ? 'glass-panel-active' : 'glass-panel hover:border-white/20'
+        selected ? 'glass-panel-active' : 'glass-panel hover:border-slate-300'
       }`}
       style={isCritical && !selected ? { animation: 'border-pulse 2s ease-in-out infinite' } : undefined}
     >
@@ -68,11 +68,11 @@ function IncidentRow({
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
               <SeverityBadge level={incident.severity_level} size="sm" />
-              <span className="text-gray-300 text-xs truncate font-mono">
+              <span className="text-slate-700 text-xs truncate font-mono">
                 {incident.location_id}
               </span>
             </div>
-            <span className="text-gray-500 text-xs shrink-0 font-mono">{timeAgo(incident.created_at)}</span>
+            <span className="text-slate-400 text-xs shrink-0 font-mono">{timeAgo(incident.created_at)}</span>
           </div>
 
           <div className="flex items-center gap-2 mt-1.5">

@@ -8,19 +8,19 @@ export default {
       },
       colors: {
         aegis: {
-          base: '#0d1117',
-          panel: '#161b22',
-          surface: 'rgba(68,147,248,0.05)',
-          border: '#21262d',
-          active: 'rgba(68,147,248,0.5)',
-          cyan: '#4493f8',
+          base: '#f8fafc',
+          panel: '#ffffff',
+          surface: 'rgba(37,99,235,0.04)',
+          border: '#e2e8f0',
+          active: 'rgba(37,99,235,0.4)',
+          cyan: '#2563eb',
         },
         severity: {
-          critical: '#f85149',
-          high: '#e3b341',
-          medium: '#d29922',
-          low: '#56d364',
-          minimal: '#3fb950',
+          critical: '#dc2626',
+          high: '#ea580c',
+          medium: '#d97706',
+          low: '#22c55e',
+          minimal: '#16a34a',
         },
       },
       animation: {
@@ -32,8 +32,8 @@ export default {
       },
       keyframes: {
         'border-pulse': {
-          '0%, 100%': { borderColor: 'rgba(248,81,73,0.4)', boxShadow: '0 0 0 rgba(248,81,73,0)' },
-          '50%': { borderColor: 'rgba(248,81,73,0.9)', boxShadow: '0 0 8px rgba(248,81,73,0.35)' },
+          '0%, 100%': { borderColor: 'rgba(220,38,38,0.4)', boxShadow: '0 0 0 rgba(220,38,38,0)' },
+          '50%': { borderColor: 'rgba(220,38,38,0.8)', boxShadow: '0 0 0 2px rgba(220,38,38,0.15)' },
         },
         'signal-ring': {
           '0%': { transform: 'scale(1)', opacity: '0.8' },

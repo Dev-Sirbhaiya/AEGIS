@@ -58,6 +58,18 @@ export function onSimulationEvent(cb: (data: unknown) => void): () => void {
   return () => { getSocket().off('simulation:event', cb); };
 }
 
+/**
+ * Fires when any operator (including this one) clicks an ACT button on the
+ * Recommendations panel. Lets other SOC seats see live acknowledgement of
+ * recommended actions instead of every dashboard holding its own local state.
+ */
+export function onIncidentActionTaken(
+  cb: (data: { incident_id: string; action_type: string; details: string; timestamp: string }) => void,
+): () => void {
+  getSocket().on('incident:action_taken', cb as (data: unknown) => void);
+  return () => { getSocket().off('incident:action_taken', cb as (data: unknown) => void); };
+}
+
 export function isConnected(): boolean {
   return socket?.connected ?? false;
 }

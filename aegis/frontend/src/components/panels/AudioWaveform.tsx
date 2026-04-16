@@ -140,10 +140,10 @@ export default function AudioWaveform() {
 
     const draw = () => {
       const { width, height } = canvas;
-      ctx.fillStyle = 'rgba(13,17,23,0.9)';
+      ctx.fillStyle = 'rgba(248,250,252,1)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.strokeStyle = '#4493f8';
+      ctx.strokeStyle = '#2563eb';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
 
@@ -204,17 +204,17 @@ export default function AudioWaveform() {
 
   return (
     <div className="glass-panel">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-        <div className="flex items-center gap-2 text-sm text-gray-300">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
+        <div className="flex items-center gap-2 text-sm text-slate-600">
           <Volume2 size={14} />
           <span>Audio Analysis</span>
           {selectedCamera && (
-            <span className="text-[10px] text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] text-green-700 bg-green-50 border border-green-200 px-1.5 py-0.5 rounded">
               {selectedCamera.camera_id}
             </span>
           )}
           {incidentMedia && (
-            <span className="text-[10px] text-amber-300 bg-amber-500/15 border border-amber-500/40 px-1.5 py-0.5 rounded flex items-center gap-1 font-semibold">
+            <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded flex items-center gap-1 font-semibold">
               <AlertTriangle size={10} />
               {incidentMedia.label}
             </span>
@@ -224,8 +224,8 @@ export default function AudioWaveform() {
           onClick={toggleMute}
           className={`flex items-center gap-1 text-xs transition-colors px-2 py-1 rounded border ${
             muted
-              ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-600'
-              : 'bg-aegis-cyan/20 hover:bg-aegis-cyan/30 text-aegis-cyan border-aegis-cyan/50'
+              ? 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
+              : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
           }`}
           title={muted ? 'Click to unmute ambient audio' : 'Click to mute ambient audio'}
         >

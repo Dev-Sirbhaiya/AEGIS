@@ -32,8 +32,8 @@ export default function LeftPanel() {
               onClick={() => setCameraView(view)}
               className={`px-3 py-1 text-[10px] font-mono font-semibold rounded tracking-widest transition-all duration-200 ${
                 cameraView === view
-                  ? 'bg-aegis-cyan/15 border border-aegis-cyan/50 text-aegis-cyan'
-                  : 'bg-transparent border border-white/10 text-gray-500 hover:text-gray-300 hover:border-white/20'
+                  ? 'bg-blue-50 border border-blue-200 text-aegis-cyan'
+                  : 'bg-white border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300'
               }`}
             >
               {view === 'feed' ? 'FEED' : view === 'grid' ? 'GRID' : 'MAP'}
@@ -49,7 +49,7 @@ export default function LeftPanel() {
       <SensorTimeline />
 
       <div>
-        <h2 className="text-gray-500 text-[10px] font-mono font-semibold uppercase tracking-widest mb-1.5 px-1">
+        <h2 className="text-slate-400 text-[10px] font-mono font-semibold uppercase tracking-widest mb-1.5 px-1">
           Active Incidents
         </h2>
         <IncidentList />

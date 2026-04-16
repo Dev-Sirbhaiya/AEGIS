@@ -19,7 +19,7 @@ export default function SensorTimeline() {
 
   return (
     <div className="glass-panel">
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-white/5 text-gray-300">
+      <div className="flex items-center gap-2 px-3 py-2 border-b border-slate-100 text-slate-600">
         <Cpu size={14} className="text-aegis-cyan" />
         <span className="text-xs font-mono tracking-wider">SENSOR TIMELINE</span>
       </div>

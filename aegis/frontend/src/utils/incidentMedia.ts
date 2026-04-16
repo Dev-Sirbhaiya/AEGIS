@@ -25,7 +25,7 @@ const INCIDENT_TYPES: {
     key: 'fire',
     match: /\b(fire|smoke|burn|flame|scdf|arff)\b/i,
     media: {
-      video: 'sim_fire_alarm.mp4',
+      video: 'arrival_hall.mp4',
       audio: 'announcement_ding.wav',
       label: 'Fire / smoke detected',
       classifications: [
@@ -39,7 +39,7 @@ const INCIDENT_TYPES: {
     key: 'active_threat',
     match: /\b(active threat|armed|gunman|shooter|weapon|hostage)\b/i,
     media: {
-      video: 'sim_active_threat.mp4',
+      video: 'terminal_corridor.mp4',
       audio: 'announcement_ding.wav',
       label: 'Active threat',
       classifications: [
@@ -53,7 +53,7 @@ const INCIDENT_TYPES: {
     key: 'unauthorized_access',
     match: /\b(unauthor|airside|breach|access[- ]control|tailgat|door alarm)\b/i,
     media: {
-      video: 'sim_unauthorized_access.mp4',
+      video: 'boarding_gate.mp4',
       audio: 'announcement_ding.wav',
       label: 'Unauthorized access attempt',
       classifications: [
@@ -67,7 +67,7 @@ const INCIDENT_TYPES: {
     key: 'unattended_baggage',
     match: /\b(unattended|abandoned|baggage|suitcase|luggage|bdu)\b/i,
     media: {
-      video: 'sim_unattended_baggage.mp4',
+      video: 'luggage_conveyor.mp4',
       audio: 'departures_hall.wav',
       label: 'Unattended baggage',
       classifications: [
@@ -81,7 +81,7 @@ const INCIDENT_TYPES: {
     key: 'medical',
     match: /\b(medical|collapsed|cpr|paramedic|ambulance|injur|cardiac)\b/i,
     media: {
-      video: 'sim_medical_emergency.mp4',
+      video: 'arrival_hall.mp4',
       audio: 'people_ambience.wav',
       label: 'Medical emergency',
       classifications: [
@@ -95,7 +95,7 @@ const INCIDENT_TYPES: {
     key: 'lift',
     match: /\b(lift|elevator|trapped|stuck)\b/i,
     media: {
-      video: 'sim_lift_breakdown.mp4',
+      video: 'rolling_corridor.mp4',
       audio: 'people_ambience.wav',
       label: 'Lift breakdown',
       classifications: [
@@ -109,7 +109,7 @@ const INCIDENT_TYPES: {
     key: 'aggressive',
     match: /\b(aggressive|argument|altercation|fight|confront|assault|shouting)\b/i,
     media: {
-      video: 'sim_aggressive_passenger.mp4',
+      video: 'checkin_counter.mp4',
       audio: 'terminal_crowd.wav',
       label: 'Aggressive passenger',
       classifications: [
@@ -123,7 +123,7 @@ const INCIDENT_TYPES: {
     key: 'bomb',
     match: /\b(bomb|suspicious package|ied|explosive)\b/i,
     media: {
-      video: 'sim_suspicious_package.mp4',
+      video: 'security_screening.mp4',
       audio: 'departures_hall.wav',
       label: 'Suspicious package',
       classifications: [
@@ -137,7 +137,7 @@ const INCIDENT_TYPES: {
     key: 'crowd',
     match: /\b(crowd|surge|stampede|cancellation|congestion|rebooking)\b/i,
     media: {
-      video: 'sim_crowd_surge.mp4',
+      video: 'checkin_counter.mp4',
       audio: 'terminal_crowd.wav',
       label: 'Crowd surge',
       classifications: [
@@ -151,7 +151,7 @@ const INCIDENT_TYPES: {
     key: 'drone',
     match: /\b(drone|uav|quadcopter|airspace)\b/i,
     media: {
-      video: 'sim_drone_intrusion.mp4',
+      video: 'boarding_gate.mp4',
       audio: 'jet_arrival.wav',
       label: 'Drone intrusion',
       classifications: [

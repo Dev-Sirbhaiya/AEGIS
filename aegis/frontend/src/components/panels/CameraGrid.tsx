@@ -19,16 +19,16 @@ export default function CameraGrid({ onExpand, onSelectCamera }: Props) {
 
   return (
     <div className="glass-panel overflow-hidden">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-        <span className="text-xs font-mono text-gray-400 tracking-wider">CAMERA GRID</span>
+      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
+        <span className="text-xs font-mono text-slate-500 tracking-wider">CAMERA GRID</span>
         <button
           onClick={onExpand}
-          className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-aegis-cyan transition-colors"
+          className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-aegis-cyan transition-colors"
         >
           <Expand size={13} />
         </button>
       </div>
-      <div className="grid grid-cols-2 gap-0.5 p-0.5 bg-black/20">
+      <div className="grid grid-cols-2 gap-0.5 p-0.5 bg-slate-100">
         {GRID_CAMERAS.map((cam, idx) => {
           const hasAlert = incidents.some(
             (i) => i.status === 'active' && i.severity_level >= 4 && i.location_id === cam.locationId

@@ -2,8 +2,33 @@
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
-from passlib.hash import bcrypt
+import bcrypt as _bcrypt
 from jose import jwt
+
+
+class bcrypt:  # noqa: N801 - preserved name; thin shim over the native `bcrypt` lib
+    """Minimal stand-in for `passlib.hash.bcrypt` so the rest of this module
+    keeps its original API (`.hash(pw)` / `.verify(pw, hashed)`).
+
+    Why: passlib 1.7.4 runs a `detect_wrap_bug` probe on first use that breaks
+    against bcrypt >= 4.1 (which now rejects passwords > 72 bytes). Using the
+    native bcrypt library directly avoids that probe.
+    """
+
+    @staticmethod
+    def hash(password: str) -> str:
+        # bcrypt itself still caps at 72 bytes — truncate defensively so very
+        # long passwords hash to a deterministic prefix instead of erroring.
+        pw = password.encode("utf-8")[:72]
+        return _bcrypt.hashpw(pw, _bcrypt.gensalt()).decode("utf-8")
+
+    @staticmethod
+    def verify(password: str, hashed: str) -> bool:
+        try:
+            pw = password.encode("utf-8")[:72]
+            return _bcrypt.checkpw(pw, hashed.encode("utf-8"))
+        except (ValueError, TypeError):
+            return False
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 

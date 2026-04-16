@@ -126,7 +126,7 @@ function ReportsPage() {
 
 function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen flex flex-col text-white overflow-hidden" style={{ background: 'var(--bg-base)' }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'var(--bg-base)' }}>
       <Navbar />
       <main className="flex-1 overflow-hidden min-h-0">
         {children}

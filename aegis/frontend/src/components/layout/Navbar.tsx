@@ -12,6 +12,7 @@ export default function Navbar() {
     { to: '/reports', label: 'Reports' },
   ];
 
+
   return (
     <nav className="glass-panel rounded-none border-x-0 border-t-0 px-4 py-2 flex items-center justify-between shrink-0">
       {/* Brand */}
@@ -42,10 +43,10 @@ export default function Navbar() {
 
       {/* Right side */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
+        <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
           <User size={14} />
           <span>{user?.username ?? 'operator'}</span>
-          <span className="text-gray-700">|</span>
+          <span className="text-slate-300">|</span>
           <button onClick={logout} className="hover:text-aegis-cyan transition-colors">
             LOGOUT
           </button>

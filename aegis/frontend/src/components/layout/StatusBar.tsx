@@ -47,7 +47,7 @@ export default function StatusBar() {
   return (
     <div
       className="px-4 py-1 flex items-center justify-between text-xs shrink-0 font-mono"
-      style={{ background: '#0d1117', borderTop: '1px solid #21262d' }}
+      style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0' }}
     >
       {/* Connection status */}
       <div className="flex items-center gap-2">
@@ -60,8 +60,8 @@ export default function StatusBar() {
         <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
           {connected ? 'CONNECTED' : 'OFFLINE'}
         </span>
-        <span className="text-gray-700 mx-1">|</span>
-        <span className="text-aegis-cyan/60 animate-fade-in" key={tickerIdx}>
+        <span className="text-slate-300 mx-1">|</span>
+        <span className="text-slate-400 animate-fade-in" key={tickerIdx}>
           {TICKER_MESSAGES[tickerIdx]}
         </span>
       </div>
@@ -87,8 +87,8 @@ export default function StatusBar() {
       )}
 
       {/* Uptime */}
-      <div className="text-gray-500">
-        UPTIME <span className="text-aegis-cyan/70">{formatUptime(uptime)}</span>
+      <div className="text-slate-400">
+        UPTIME <span className="text-slate-600">{formatUptime(uptime)}</span>
       </div>
     </div>
   );

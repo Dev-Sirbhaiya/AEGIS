@@ -1,5 +1,27 @@
 """Simulation scoring evaluator."""
-from typing import Dict, List
+from typing import Dict, List, Set
+
+# Action-type synonym clusters. The dashboard emits a small fixed vocabulary
+# of action_type strings ("dispatch", "call", "alert", "lock", "medical",
+# "evacuate") but the scenario JSON's `optimal_response.primary_action` is
+# free-form prose written by scenario authors ("notify APD immediately",
+# "sound alarm and evacuate"). Without synonym expansion a clearly-correct
+# action like "call" scores zero against "notify APD" because the literal
+# substring check fails.
+_ACTION_SYNONYMS: Dict[str, Set[str]] = {
+    "dispatch": {"dispatch", "patrol", "deploy", "send", "officer", "respond"},
+    "call":     {"call", "notify", "contact", "inform", "apd", "police", "scdf", "arff"},
+    "alert":    {"alert", "alarm", "sound", "broadcast", "announce"},
+    "lock":     {"lock", "lockdown", "seal", "close", "secure", "cordon"},
+    "medical":  {"medical", "paramedic", "ambulance", "cpr", "aed", "injur"},
+    "evacuate": {"evacuate", "evacuation", "clear", "disperse"},
+}
+
+
+def _expand_action_type(action_type: str) -> Set[str]:
+    """Return the synonym cluster for an action_type, or {action_type} if unknown."""
+    lower = action_type.lower().strip()
+    return _ACTION_SYNONYMS.get(lower, {lower})
 
 
 def calculate_score(
@@ -38,19 +60,32 @@ def calculate_score(
     primary = optimal_response.get("primary_action", "").lower()
     secondary = optimal_response.get("secondary_action", "").lower()
 
-    # Primary action match (check if any action matches key words from optimal)
-    primary_keywords = _extract_keywords(primary)
-    primary_score = rubric.get("correct_primary_action", 30) if any(
-        any(kw in at for kw in primary_keywords) for at in action_types
-    ) else 0
+    # Expand each action_type through its synonym cluster so a "call" click
+    # correctly matches an optimal response like "notify APD immediately".
+    expanded_vocab: Set[str] = set()
+    for at in action_types:
+        expanded_vocab |= _expand_action_type(at)
 
-    # Secondary action match
-    secondary_keywords = _extract_keywords(secondary)
-    secondary_score = rubric.get("correct_secondary_action", 20) if (
-        len(actions) > 1 and any(
-            any(kw in at for kw in secondary_keywords) for at in action_types
-        )
-    ) else 0
+    def _matches(optimal_text: str) -> bool:
+        keywords = _extract_keywords(optimal_text)
+        if not keywords:
+            return False
+        # Direct substring hit OR synonym overlap between officer-clicked
+        # action types and optimal-response keywords.
+        for kw in keywords:
+            if kw in expanded_vocab:
+                return True
+            for at in action_types:
+                if kw in at or at in kw:
+                    return True
+        return False
+
+    primary_score = rubric.get("correct_primary_action", 30) if _matches(primary) else 0
+    secondary_score = (
+        rubric.get("correct_secondary_action", 20)
+        if (len(actions) > 1 and _matches(secondary))
+        else 0
+    )
 
     # Escalation — officer took at least 2 distinct action types
     distinct_types = set(action_types)

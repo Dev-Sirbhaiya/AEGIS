@@ -22,8 +22,8 @@ export default function RightPanel() {
 
       {/* Voice panel — shown when calls are active */}
       {hasActiveCall && (
-        <div className="flex flex-col border-t border-white/5 mt-2 pt-2 min-h-0 max-h-64">
-          <div className="px-3 py-1.5 text-xs text-gray-400 font-mono font-semibold uppercase tracking-widest">
+        <div className="flex flex-col border-t border-slate-100 mt-2 pt-2 min-h-0 max-h-64">
+          <div className="px-3 py-1.5 text-xs text-slate-500 font-mono font-semibold uppercase tracking-widest">
             Voice Agent
           </div>
           <Transcription />

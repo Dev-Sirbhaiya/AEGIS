@@ -43,11 +43,15 @@ async def lifespan(app: FastAPI):
     await init_db()
     print("Database initialized")
 
-    # Seed default admin user if no users exist
+    # Seed default admin user if no users exist.
+    # We reuse the `bcrypt` shim from api.routes.auth (native bcrypt lib —
+    # avoids the passlib 1.7.4 / bcrypt >= 4.1 wrap-bug incompatibility that
+    # otherwise blows up lifespan startup with "password cannot be longer
+    # than 72 bytes").
     from db.session import async_session
     from models.user import User
     from sqlalchemy import select, func
-    from passlib.hash import bcrypt as _bcrypt
+    from api.routes.auth import bcrypt as _bcrypt
     async with async_session() as _db:
         count = (await _db.execute(select(func.count()).select_from(User))).scalar_one()
         if count == 0:
