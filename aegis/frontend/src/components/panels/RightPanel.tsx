@@ -7,7 +7,7 @@ import CallControls from '../voice/CallControls';
 import { useVoiceStore } from '../../stores/voiceStore';
 
 export default function RightPanel() {
-  const { selectedCallId, activeCalls } = useVoiceStore();
+  const { activeCalls } = useVoiceStore();
   const hasActiveCall = activeCalls.length > 0;
 
   return (
@@ -22,8 +22,8 @@ export default function RightPanel() {
 
       {/* Voice panel — shown when calls are active */}
       {hasActiveCall && (
-        <div className="flex flex-col border-t border-gray-700 mt-2 pt-2 min-h-0 max-h-64">
-          <div className="px-3 py-1.5 text-xs text-gray-400 font-semibold uppercase tracking-wider">
+        <div className="flex flex-col border-t border-white/5 mt-2 pt-2 min-h-0 max-h-64">
+          <div className="px-3 py-1.5 text-xs text-gray-400 font-mono font-semibold uppercase tracking-widest">
             Voice Agent
           </div>
           <Transcription />
