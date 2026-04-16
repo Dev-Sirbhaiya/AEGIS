@@ -1,19 +1,47 @@
+import { useState } from 'react';
 import CameraFeed from './CameraFeed';
+import CameraGrid from './CameraGrid';
 import AudioWaveform from './AudioWaveform';
 import SensorTimeline from './SensorTimeline';
 import IncidentList from './IncidentList';
 import VoiceStatus from '../voice/VoiceStatus';
+import TerminalMap from '../map/TerminalMap';
+
+type CameraView = 'feed' | 'grid' | 'map';
 
 export default function LeftPanel() {
+  const [cameraView, setCameraView] = useState<CameraView>('feed');
+
   return (
     <div className="flex flex-col gap-3 overflow-y-auto h-full pr-1">
-      <CameraFeed />
+      {/* Camera view toggle tabs */}
+      <div>
+        <div className="flex gap-1 mb-2">
+          {(['feed', 'grid', 'map'] as CameraView[]).map((view) => (
+            <button
+              key={view}
+              onClick={() => setCameraView(view)}
+              className={`px-3 py-1 text-[10px] font-mono font-semibold rounded tracking-widest transition-all duration-200 ${
+                cameraView === view
+                  ? 'bg-aegis-cyan/15 border border-aegis-cyan/50 text-aegis-cyan'
+                  : 'bg-transparent border border-white/10 text-gray-500 hover:text-gray-300 hover:border-white/20'
+              }`}
+            >
+              {view === 'feed' ? 'FEED' : view === 'grid' ? 'GRID' : 'MAP'}
+            </button>
+          ))}
+        </div>
+        {cameraView === 'feed' && <CameraFeed onSwitchGrid={() => setCameraView('grid')} />}
+        {cameraView === 'grid' && <CameraGrid onExpand={() => setCameraView('feed')} />}
+        {cameraView === 'map'  && <TerminalMap />}
+      </div>
+
       <AudioWaveform />
       <SensorTimeline />
 
       <div>
-        <h2 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1.5 px-1">
-          Incidents
+        <h2 className="text-gray-500 text-[10px] font-mono font-semibold uppercase tracking-widest mb-1.5 px-1">
+          Active Incidents
         </h2>
         <IncidentList />
       </div>
