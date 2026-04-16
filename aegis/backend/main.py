@@ -19,6 +19,10 @@ from config.settings import settings
 from db.session import init_db
 from api.routes import incidents, cameras, voice, simulation, reports, auth, health, media
 from api.websocket.manager import sio
+# Import for side-effect: registers `subscribe_camera`, `subscribe_simulation`,
+# and `action:incident` handlers onto `sio`. Without this import those
+# decorators never run and the handlers silently do not exist.
+from api.websocket import events as _ws_events  # noqa: F401
 
 # Global service instances — accessed by route dependencies
 knowledge_graph = None
@@ -38,6 +42,24 @@ async def lifespan(app: FastAPI):
     # Initialize database
     await init_db()
     print("Database initialized")
+
+    # Seed default admin user if no users exist
+    from db.session import async_session
+    from models.user import User
+    from sqlalchemy import select, func
+    from passlib.hash import bcrypt as _bcrypt
+    async with async_session() as _db:
+        count = (await _db.execute(select(func.count()).select_from(User))).scalar_one()
+        if count == 0:
+            _db.add(User(
+                username="admin",
+                email="admin@aegis.local",
+                hashed_password=_bcrypt.hash("admin"),
+                role="admin",
+                is_active=True,
+            ))
+            await _db.commit()
+            print("Default admin user created (admin/admin)")
     print(f"LLM Provider: {settings.LLM_PROVIDER}")
     print(f"Anomaly model: {settings.ANOMALIB_MODEL}")
     print(f"Whisper model: {settings.WHISPER_MODEL}")

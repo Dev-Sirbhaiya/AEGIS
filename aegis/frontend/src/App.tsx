@@ -44,68 +44,50 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-base)' }}>
-      {/* Animated background rings */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        {[160, 280, 400, 520].map((r) => (
-          <div key={r} className="absolute rounded-full border border-aegis-cyan/5"
-            style={{ width: r, height: r }} />
-        ))}
-      </div>
-
-      <div className="glass-panel p-8 w-full max-w-sm relative z-10" style={{ boxShadow: '0 0 40px rgba(232,160,32,0.08)' }}>
+      <div className="glass-panel p-8 w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-3">
-            <div className="relative">
-              <div className="w-14 h-14 rounded-full bg-aegis-cyan/10 border border-aegis-cyan/30 flex items-center justify-center">
-                <span className="text-aegis-cyan text-2xl">⬡</span>
-              </div>
-              <div className="absolute inset-0 rounded-full border border-aegis-cyan/20 animate-pulse" />
-            </div>
-          </div>
-          <div className="text-3xl font-bold tracking-widest font-mono text-gradient-cyan">AEGIS</div>
-          <div className="text-gray-500 text-xs mt-1 font-mono tracking-wider">ADAPTIVE SECURITY INTELLIGENCE</div>
-          <div className="text-gray-600 text-xs mt-1 italic">"See. Hear. Understand. Respond."</div>
+          <div className="text-3xl font-bold tracking-widest font-mono text-gradient-cyan mb-1">AEGIS</div>
+          <div className="text-gray-500 text-xs font-mono tracking-wider">ADAPTIVE SECURITY INTELLIGENCE</div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-3">
           <input
             type="text"
-            placeholder="USERNAME"
+            placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-white/5 text-white border border-white/10 rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 focus:bg-aegis-cyan/5 transition-all placeholder:text-gray-600"
+            className="w-full bg-aegis-base text-white border border-aegis-border rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 transition-all placeholder:text-gray-600"
           />
           <input
             type="password"
-            placeholder="PASSWORD"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-white/5 text-white border border-white/10 rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 focus:bg-aegis-cyan/5 transition-all placeholder:text-gray-600"
+            className="w-full bg-aegis-base text-white border border-aegis-border rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 transition-all placeholder:text-gray-600"
           />
           {error && <p className="text-red-400 text-xs font-mono">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2.5 font-mono font-bold text-sm rounded tracking-widest transition-all duration-200 text-aegis-cyan border border-aegis-cyan/40 bg-aegis-cyan/10 hover:bg-aegis-cyan/20 hover:border-aegis-cyan/70 hover:shadow-[0_0_16px_rgba(232,160,32,0.35)]"
+            className="w-full py-2.5 font-mono font-bold text-sm rounded tracking-wider transition-all duration-200 text-aegis-cyan border border-aegis-cyan/40 bg-aegis-cyan/10 hover:bg-aegis-cyan/20"
           >
-            AUTHENTICATE
+            Sign In
           </button>
         </form>
 
-        <div className="mt-3 relative">
-          <div className="absolute inset-x-0 top-1/2 border-t border-white/5" />
-          <div className="relative flex justify-center">
-            <span className="px-2 text-[10px] font-mono text-gray-700" style={{ background: 'var(--bg-panel)' }}>OR</span>
-          </div>
+        <div className="mt-3 flex items-center gap-3">
+          <div className="flex-1 border-t border-aegis-border" />
+          <span className="text-[10px] font-mono text-gray-600">OR</span>
+          <div className="flex-1 border-t border-aegis-border" />
         </div>
 
         <button
           onClick={handleDemoMode}
-          className="mt-3 w-full py-2 font-mono font-bold text-xs rounded tracking-widest transition-all duration-200 text-amber-400/80 border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 hover:border-amber-500/40"
+          className="mt-3 w-full py-2 font-mono text-xs rounded tracking-wider transition-all duration-200 text-gray-400 border border-aegis-border hover:border-gray-500 hover:text-gray-300"
         >
-          ENTER DEMO MODE
+          Enter Demo Mode
         </button>
 
-        <div className="mt-5 text-center text-[10px] font-mono text-gray-700">
+        <div className="mt-6 text-center text-[10px] font-mono text-gray-700">
           CERTIS GROUP · CHANGI AIRPORT · SOC-SECURE
         </div>
       </div>

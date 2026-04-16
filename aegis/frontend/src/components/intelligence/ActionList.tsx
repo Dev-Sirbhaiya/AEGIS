@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIncidentStore } from '../../stores/incidentStore';
-import { getSocket } from '../../services/socket';
+import { getSocket, onIncidentActionTaken } from '../../services/socket';
 import { CheckCircle, Radio, Lock, AlertCircle, Zap } from 'lucide-react';
 import type { Recommendation } from '../../types/incident';
 
@@ -9,7 +9,7 @@ const ACTION_COLORS: Record<string, { strip: string; icon: React.ReactNode; badg
   call:     { strip: '#a855f7', icon: <Radio size={13} />,        badge: 'text-purple-400 bg-purple-950 border-purple-800' },
   alert:    { strip: '#f59e0b', icon: <AlertCircle size={13} />,  badge: 'text-amber-400 bg-amber-950 border-amber-800'  },
   lock:     { strip: '#ef4444', icon: <Lock size={13} />,         badge: 'text-red-400 bg-red-950 border-red-800'      },
-  default:  { strip: '#e8a020', icon: <Zap size={13} />,          badge: 'text-amber-400 bg-amber-950 border-amber-800'  },
+  default:  { strip: '#4493f8', icon: <Zap size={13} />,          badge: 'text-blue-400 bg-blue-950 border-blue-800'  },
 };
 
 function inferActionType(action: string): string {
@@ -24,6 +24,24 @@ function inferActionType(action: string): string {
 export default function ActionList() {
   const incident = useIncidentStore((s) => s.selectedIncident);
   const [actioned, setActioned] = useState<Set<number>>(new Set());
+
+  // Reset DONE marks whenever the operator switches to a different incident —
+  // otherwise index-based action tracking bleeds across incidents.
+  useEffect(() => {
+    setActioned(new Set());
+  }, [incident?.id]);
+
+  // When any seat broadcasts an action on *this* incident, mirror the DONE
+  // state locally so multi-operator SOC deployments stay in sync.
+  useEffect(() => {
+    if (!incident) return;
+    const unsubscribe = onIncidentActionTaken((data) => {
+      if (data.incident_id !== incident.id) return;
+      const idx = incident.recommendations.findIndex((r) => r.action === data.details);
+      if (idx >= 0) setActioned((prev) => new Set(prev).add(idx));
+    });
+    return unsubscribe;
+  }, [incident]);
 
   if (!incident || incident.recommendations.length === 0) {
     return (
@@ -80,7 +98,7 @@ export default function ActionList() {
                   className={`shrink-0 flex items-center gap-1 text-xs font-mono font-bold px-2.5 py-1.5 rounded border transition-all duration-200 ${
                     done
                       ? 'bg-emerald-950 border-emerald-700 text-emerald-400 cursor-default'
-                      : 'bg-transparent hover:bg-white/5 border-white/20 text-white hover:border-aegis-cyan hover:text-aegis-cyan hover:shadow-[0_0_8px_rgba(232,160,32,0.35)]'
+                      : 'bg-transparent hover:bg-white/5 border-white/20 text-white hover:border-aegis-cyan hover:text-aegis-cyan hover:shadow-[0_0_8px_rgba(68,147,248,0.3)]'
                   }`}
                 >
                   {done ? <><CheckCircle size={12} /> DONE</> : <>{style.icon} ACT</>}

@@ -13,7 +13,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="glass-panel rounded-none border-x-0 border-t-0 px-4 py-2 flex items-center justify-between shrink-0" style={{borderBottom:'1px solid rgba(232,160,32,0.18)'}}>
+    <nav className="glass-panel rounded-none border-x-0 border-t-0 px-4 py-2 flex items-center justify-between shrink-0">
       {/* Brand */}
       <div className="flex items-center gap-3">
         <div className="relative">

@@ -8,19 +8,19 @@ export default {
       },
       colors: {
         aegis: {
-          base: '#0c0a07',
-          panel: 'rgba(20,16,11,0.92)',
-          surface: 'rgba(232,160,32,0.04)',
-          border: 'rgba(232,160,32,0.12)',
-          active: 'rgba(232,160,32,0.48)',
-          cyan: '#e8a020',
+          base: '#0d1117',
+          panel: '#161b22',
+          surface: 'rgba(68,147,248,0.05)',
+          border: '#21262d',
+          active: 'rgba(68,147,248,0.5)',
+          cyan: '#4493f8',
         },
         severity: {
-          critical: '#cc3c3c',
-          high: '#c94a18',
-          medium: '#d4891a',
-          low: '#7faa5e',
-          minimal: '#3d7055',
+          critical: '#f85149',
+          high: '#e3b341',
+          medium: '#d29922',
+          low: '#56d364',
+          minimal: '#3fb950',
         },
       },
       animation: {
@@ -32,8 +32,8 @@ export default {
       },
       keyframes: {
         'border-pulse': {
-          '0%, 100%': { borderColor: 'rgba(239,68,68,0.4)', boxShadow: '0 0 0 rgba(239,68,68,0)' },
-          '50%': { borderColor: 'rgba(239,68,68,0.9)', boxShadow: '0 0 8px rgba(239,68,68,0.4)' },
+          '0%, 100%': { borderColor: 'rgba(248,81,73,0.4)', boxShadow: '0 0 0 rgba(248,81,73,0)' },
+          '50%': { borderColor: 'rgba(248,81,73,0.9)', boxShadow: '0 0 8px rgba(248,81,73,0.35)' },
         },
         'signal-ring': {
           '0%': { transform: 'scale(1)', opacity: '0.8' },

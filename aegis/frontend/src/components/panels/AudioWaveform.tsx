@@ -140,10 +140,10 @@ export default function AudioWaveform() {
 
     const draw = () => {
       const { width, height } = canvas;
-      ctx.fillStyle = 'rgba(12,10,7,0.85)';
+      ctx.fillStyle = 'rgba(13,17,23,0.9)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.strokeStyle = '#e8a020';
+      ctx.strokeStyle = '#4493f8';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
 

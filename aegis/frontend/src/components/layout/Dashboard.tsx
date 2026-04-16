@@ -42,17 +42,17 @@ export default function Dashboard() {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      <div className="overflow-hidden p-3" style={{ width: `${splitRatio}%` }}>
+      <div className="overflow-hidden h-full p-3" style={{ width: `${splitRatio}%` }}>
         <LeftPanel />
       </div>
 
       <div
-        className="w-1 hover:bg-aegis-cyan/40 cursor-col-resize transition-colors shrink-0"
-        style={{ background: 'rgba(232,160,32,0.14)' }}
+        className="w-px hover:bg-aegis-cyan/60 cursor-col-resize transition-colors shrink-0"
+        style={{ background: '#21262d' }}
         onMouseDown={handleMouseDown}
       />
 
-      <div className="flex-1 overflow-hidden p-3">
+      <div className="flex-1 overflow-hidden h-full p-3">
         <RightPanel />
       </div>
     </div>
