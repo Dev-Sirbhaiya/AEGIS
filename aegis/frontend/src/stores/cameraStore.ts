@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import api from '../services/api';
+import { demoCameras, DEMO_MEDIA_MAP } from '../demo/data';
 
 interface Camera {
   camera_id: string;
@@ -9,25 +10,60 @@ interface Camera {
   location_name: string;
 }
 
+interface CameraMedia {
+  video_url: string;
+  audio_url: string;
+}
+
 interface CameraStore {
   cameras: Camera[];
   selectedCamera: Camera | null;
+  media: CameraMedia | null;
   fetchCameras: () => Promise<void>;
   selectCamera: (camera: Camera | null) => void;
 }
 
-export const useCameraStore = create<CameraStore>((set) => ({
+export const useCameraStore = create<CameraStore>((set, get) => ({
   cameras: [],
   selectedCamera: null,
+  media: null,
 
   fetchCameras: async () => {
     try {
       const { data } = await api.get('/cameras');
-      set({ cameras: data.cameras || [] });
+      const cameras = data.cameras || [];
+      const first = cameras[0] ?? null;
+      set({ cameras, selectedCamera: first });
+      if (first) get().selectCamera(first);
     } catch (err) {
       console.error('Failed to fetch cameras:', err);
+      const first = demoCameras[0] ?? null;
+      set({ cameras: demoCameras, selectedCamera: first });
+      if (first) get().selectCamera(first);
     }
   },
 
-  selectCamera: (camera) => set({ selectedCamera: camera }),
+  selectCamera: async (camera) => {
+    set({ selectedCamera: camera });
+    if (!camera) {
+      set({ media: null });
+      return;
+    }
+    try {
+      const { data } = await api.get(`/media/videos/${camera.camera_id}`);
+      set({
+        media: {
+          video_url: data.video_url,
+          audio_url: data.audio_url,
+        },
+      });
+    } catch (err) {
+      console.warn('Camera media fallback to demo:', err);
+      const fallback = DEMO_MEDIA_MAP[camera.camera_id] ?? {
+        video_url: '/media/videos/terminal_corridor.mp4',
+        audio_url: '/media/audio/terminal_crowd.wav',
+      };
+      set({ media: fallback });
+    }
+  },
 }));

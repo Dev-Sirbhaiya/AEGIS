@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { VoiceCall, TranscriptionEntry } from '../types/incident';
+import { demoVoiceCall, demoTranscriptions } from '../demo/data';
 
 interface VoiceStore {
   activeCalls: VoiceCall[];
@@ -10,6 +11,7 @@ interface VoiceStore {
   removeCall: (callId: string) => void;
   addTranscription: (callId: string, entry: TranscriptionEntry) => void;
   selectCall: (callId: string | null) => void;
+  startDemoCall: () => void;
 }
 
 export const useVoiceStore = create<VoiceStore>((set) => ({
@@ -45,4 +47,16 @@ export const useVoiceStore = create<VoiceStore>((set) => ({
     })),
 
   selectCall: (callId) => set({ selectedCallId: callId }),
+
+  startDemoCall: () =>
+    set((state) => ({
+      activeCalls: state.activeCalls.some((c) => c.call_id === demoVoiceCall.call_id)
+        ? state.activeCalls
+        : [demoVoiceCall as VoiceCall, ...state.activeCalls],
+      selectedCallId: state.selectedCallId ?? demoVoiceCall.call_id,
+      transcriptions: {
+        ...state.transcriptions,
+        [demoVoiceCall.call_id]: demoTranscriptions as TranscriptionEntry[],
+      },
+    })),
 }));
