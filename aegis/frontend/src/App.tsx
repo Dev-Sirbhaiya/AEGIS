@@ -26,12 +26,20 @@ function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     try {
       await useAuthStore.getState().login(username, password);
       navigate('/', { replace: true });
-    } catch {
-      setError('Invalid credentials');
+    } catch (err: unknown) {
+      const isNetwork = err && typeof err === 'object' && 'code' in err && (err as {code: string}).code === 'ERR_NETWORK';
+      setError(isNetwork ? 'Backend offline — use Demo Mode below' : 'Invalid credentials');
     }
+  };
+
+  const handleDemoMode = () => {
+    localStorage.setItem('aegis_token', 'demo');
+    useAuthStore.setState({ token: 'demo', isAuthenticated: true });
+    navigate('/', { replace: true });
   };
 
   return (
@@ -83,7 +91,21 @@ function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-[10px] font-mono text-gray-700">
+        <div className="mt-3 relative">
+          <div className="absolute inset-x-0 top-1/2 border-t border-white/5" />
+          <div className="relative flex justify-center">
+            <span className="px-2 text-[10px] font-mono text-gray-700" style={{ background: 'var(--bg-panel)' }}>OR</span>
+          </div>
+        </div>
+
+        <button
+          onClick={handleDemoMode}
+          className="mt-3 w-full py-2 font-mono font-bold text-xs rounded tracking-widest transition-all duration-200 text-amber-400/80 border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 hover:border-amber-500/40"
+        >
+          ENTER DEMO MODE
+        </button>
+
+        <div className="mt-5 text-center text-[10px] font-mono text-gray-700">
           CERTIS GROUP · CHANGI AIRPORT · SOC-SECURE
         </div>
       </div>
