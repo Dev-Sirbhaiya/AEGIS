@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Incident } from '../types/incident';
 import api from '../services/api';
+import { demoIncidents } from '../demo/data';
 
 interface IncidentStore {
   incidents: Incident[];
@@ -39,9 +40,11 @@ export const useIncidentStore = create<IncidentStore>((set, get) => ({
     set({ loading: true });
     try {
       const { data } = await api.get('/incidents?limit=50');
-      set({ incidents: data.incidents || [] });
+      const incidents = data.incidents || [];
+      set({ incidents, selectedIncident: incidents[0] ?? null });
     } catch (err) {
       console.error('Failed to fetch incidents:', err);
+      set({ incidents: demoIncidents, selectedIncident: demoIncidents[0] ?? null });
     } finally {
       set({ loading: false });
     }

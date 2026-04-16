@@ -8,14 +8,16 @@ This is the main entry point. It:
 4. Connects to PostgreSQL and Redis on startup
 5. Loads AI models and services on startup
 """
+import os
 import socketio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
 from config.settings import settings
 from db.session import init_db
-from api.routes import incidents, cameras, voice, simulation, reports, auth, health
+from api.routes import incidents, cameras, voice, simulation, reports, auth, health, media
 from api.websocket.manager import sio
 
 # Global service instances — accessed by route dependencies
@@ -79,6 +81,17 @@ async def lifespan(app: FastAPI):
     sim_engine = SimulationEngine(llm_client=llm_client)
     sim_engine.load_scenarios()
 
+    # Verify demo media files are present so any missing downloads surface
+    # immediately instead of silently 404-ing in the browser.
+    from api.routes.media import verify_media_files
+    missing_media = verify_media_files()
+    if missing_media:
+        print(f"WARNING: {len(missing_media)} demo media files missing:")
+        for path in missing_media:
+            print(f"  - {path}")
+    else:
+        print("Demo media files verified")
+
     print("All AEGIS services initialized")
 
     yield
@@ -112,8 +125,15 @@ app.include_router(cameras.router, prefix="/api/cameras", tags=["Cameras"])
 app.include_router(voice.router, prefix="/api/voice", tags=["Voice Agent"])
 app.include_router(simulation.router, prefix="/api/simulation", tags=["Simulation"])
 app.include_router(reports.router, prefix="/api/reports", tags=["Reports"])
+app.include_router(media.router, prefix="/api/media", tags=["Demo Media"])
 
-# Mount Socket.IO
-socket_app = socketio.ASGIApp(sio, other_app=app)
+# Serve demo media files (videos and audio)
+_demo_dir = os.path.join(settings.DATA_DIR, "demo")
+if os.path.isdir(_demo_dir):
+    app.mount("/media", StaticFiles(directory=_demo_dir), name="demo-media")
 
-# To run: uvicorn main:socket_app --host 0.0.0.0 --port 8000 --reload
+# Mount Socket.IO as a sub-app under /socket.io to avoid intercepting other routes
+sio_asgi = socketio.ASGIApp(sio, socketio_path="/")
+app.mount("/socket.io", sio_asgi)
+
+# To run: uvicorn main:app --host 0.0.0.0 --port 8000 --reload

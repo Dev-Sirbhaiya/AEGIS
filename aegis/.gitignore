@@ -40,8 +40,12 @@ models/panns/*.pth
 models/clap/*.bin
 models/whisper/*.pt
 data/chroma/
+data/demo/videos/
+data/demo/audio/
 data/demo/*.mp4
 data/demo/*.wav
+backend/aegis_dev.db
+docs/superpowers/
 *.log
 
 # Docker

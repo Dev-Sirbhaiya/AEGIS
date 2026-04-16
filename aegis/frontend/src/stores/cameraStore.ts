@@ -23,6 +23,10 @@ interface CameraStore {
   selectCamera: (camera: Camera | null) => void;
 }
 
+// Monotonic token to discard out-of-order /media/videos responses when the
+// user clicks cameras faster than the network responds.
+let mediaRequestToken = 0;
+
 export const useCameraStore = create<CameraStore>((set, get) => ({
   cameras: [],
   selectedCamera: null,
@@ -44,13 +48,12 @@ export const useCameraStore = create<CameraStore>((set, get) => ({
   },
 
   selectCamera: async (camera) => {
-    set({ selectedCamera: camera });
-    if (!camera) {
-      set({ media: null });
-      return;
-    }
+    const myToken = ++mediaRequestToken;
+    set({ selectedCamera: camera, media: null });
+    if (!camera) return;
     try {
       const { data } = await api.get(`/media/videos/${camera.camera_id}`);
+      if (myToken !== mediaRequestToken) return; // a newer selection superseded us
       set({
         media: {
           video_url: data.video_url,
@@ -58,6 +61,7 @@ export const useCameraStore = create<CameraStore>((set, get) => ({
         },
       });
     } catch (err) {
+      if (myToken !== mediaRequestToken) return;
       console.warn('Camera media fallback to demo:', err);
       const fallback = DEMO_MEDIA_MAP[camera.camera_id] ?? {
         video_url: '/media/videos/terminal_corridor.mp4',

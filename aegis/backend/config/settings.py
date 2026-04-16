@@ -22,9 +22,9 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4o"
     GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://aegis:aegis_dev_password@localhost:5432/aegis"
-    REDIS_URL: str = "redis://localhost:6379/0"
+    # Database (SQLite for local dev, PostgreSQL for production)
+    DATABASE_URL: str = "sqlite+aiosqlite:///./aegis_dev.db"
+    REDIS_URL: str = ""  # Optional — leave empty to skip Redis
 
     # Auth
     JWT_SECRET: str = "change-this-to-a-random-64-char-string-in-production"

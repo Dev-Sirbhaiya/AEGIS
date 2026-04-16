@@ -25,7 +25,7 @@ export const demoCameras: DemoCamera[] = [
     location_name: 'Terminal 3 Arrival Hall Retail Cluster',
   },
   {
-    camera_id: 'CAM_T1_ROW_G_02',
+    camera_id: 'CAM_T1_CKG_02',
     location_id: 'T1_CHECKIN_ROW_G',
     terminal: 'T1',
     zone: 'public',
@@ -398,9 +398,11 @@ export const demoVoiceCall = {
   source_id: 'INTERCOM_T4_LIFT_3',
   location_id: 'T4_CHECKIN',
   status: 'active' as const,
+  call_type: 'distress' as const,
   started_at: new Date(now.getTime() - 45 * 1000).toISOString(),
   urgency_score: 0.35,
   alert_raised: false,
+  situation: undefined,
 };
 
 export const demoTranscriptions = [
@@ -414,7 +416,7 @@ export const demoTranscriptions = [
 export const DEMO_MEDIA_MAP: Record<string, { video_url: string; audio_url: string }> = {
   CAM_T2_B4_01:      { video_url: '/media/videos/terminal_corridor.mp4', audio_url: '/media/audio/terminal_crowd.wav'  },
   CAM_T3_ARR_03:     { video_url: '/media/videos/arrival_hall.mp4',      audio_url: '/media/audio/terminal_crowd.wav'  },
-  CAM_T1_ROW_G_02:   { video_url: '/media/videos/rolling_corridor.mp4',  audio_url: '/media/audio/departures_hall.wav' },
+  CAM_T1_CKG_02:   { video_url: '/media/videos/rolling_corridor.mp4',  audio_url: '/media/audio/departures_hall.wav' },
 };
 
 export const demoDailyReport = {

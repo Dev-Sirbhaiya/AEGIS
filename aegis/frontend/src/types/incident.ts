@@ -57,6 +57,13 @@ export interface TranscriptionEntry {
   timestamp: string;
 }
 
+export interface CallSituation {
+  explanation: string;
+  severity_level: number;
+  recommendations: Recommendation[];
+  contacts: Contact[];
+}
+
 export interface VoiceCall {
   call_id: string;
   source_id: string;
@@ -65,6 +72,8 @@ export interface VoiceCall {
   started_at: string;
   urgency_score: number;
   alert_raised: boolean;
+  call_type?: 'distress' | 'patrol';
+  situation?: CallSituation;
   transcriptions?: TranscriptionEntry[];
   incident_id?: string;
 }

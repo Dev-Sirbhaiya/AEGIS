@@ -15,14 +15,18 @@ class CallManager:
         self.max_concurrent = max_concurrent
         self._queue: asyncio.Queue = asyncio.Queue()
 
-    async def start_call(self, source_id: str, location_id: str) -> CallState:
+    async def start_call(
+        self,
+        source_id: str,
+        location_id: str,
+        call_type: str = "distress",
+    ) -> CallState:
         """Start a new call, queuing if at capacity."""
         active = self.agent.get_active_calls()
         if len(active) >= self.max_concurrent:
-            # Still start the call — agent handles overflow gracefully
             print(f"Warning: {len(active)} active calls (max {self.max_concurrent})")
 
-        return await self.agent.start_call(source_id, location_id)
+        return await self.agent.start_call(source_id, location_id, call_type)
 
     async def process_turn(self, call_id: str, audio_path: str) -> Dict:
         return await self.agent.process_audio_turn(call_id, audio_path)

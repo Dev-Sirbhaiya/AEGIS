@@ -15,6 +15,7 @@ def get_call_manager():
 class StartCallRequest(BaseModel):
     source_id: str
     location_id: str
+    call_type: str = "distress"   # "distress" | "patrol"
 
 
 class ProcessTurnRequest(BaseModel):
@@ -31,9 +32,11 @@ async def start_call(
     call = await manager.start_call(
         source_id=body.source_id,
         location_id=body.location_id,
+        call_type=body.call_type,
     )
     return {
         "call_id": call.call_id,
+        "call_type": call.call_type,
         "status": call.status,
         "location_id": call.location_id,
         "source_id": call.source_id,

@@ -6,9 +6,8 @@ python-socketio==5.12.1
 
 # Database
 sqlalchemy==2.0.36
-asyncpg==0.30.0
+aiosqlite==0.20.0
 alembic==1.14.1
-psycopg2-binary==2.9.10
 
 # Redis
 redis==5.2.1

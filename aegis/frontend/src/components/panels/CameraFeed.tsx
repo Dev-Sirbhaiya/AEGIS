@@ -18,10 +18,12 @@ export default function CameraFeed({ onSwitchGrid }: Props) {
 
   const incidentMedia = useMemo(() => {
     if (!selectedIncident) return null;
+    // Match strictly on location_id (e.g. "T2_GATE_B4"). Don't compare on
+    // `zone` ("public"/"airside"/"restricted") — that's a category and would
+    // light up every public camera for any public-zone incident.
     const sameZone =
       !selectedCamera ||
-      selectedCamera.location_id === selectedIncident.location_id ||
-      selectedCamera.zone === selectedIncident.zone;
+      selectedCamera.location_id === selectedIncident.location_id;
     if (!sameZone) return null;
     return getIncidentMedia(selectedIncident);
   }, [selectedIncident, selectedCamera]);
@@ -42,7 +44,12 @@ export default function CameraFeed({ onSwitchGrid }: Props) {
     setError(false);
     videoRef.current.src = activeVideoUrl;
     videoRef.current.load();
-    videoRef.current.play().catch(() => setError(true));
+    // play() rejects with AbortError when a subsequent load() interrupts it
+    // (happens on rapid camera switches). That's not a real stream failure,
+    // so don't flip the error overlay for it.
+    videoRef.current.play().catch((e: DOMException) => {
+      if (e?.name !== 'AbortError') setError(true);
+    });
   }, [activeVideoUrl]);
 
   const hasCritical = incidents.some(

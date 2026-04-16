@@ -16,7 +16,7 @@ run:
 # Development mode: run backend + frontend separately
 dev:
 	@echo "Starting backend..."
-	cd backend && uvicorn main:socket_app --host 0.0.0.0 --port 8000 --reload &
+	cd backend && uvicorn main:app --host 0.0.0.0 --port 8000 --reload &
 	@echo "Starting frontend..."
 	cd frontend && npm run dev
 

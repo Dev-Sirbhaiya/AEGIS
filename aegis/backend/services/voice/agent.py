@@ -31,6 +31,7 @@ class CallState:
     source_id: str
     location_id: str
     status: str  # active | soc_takeover | ended
+    call_type: str = "distress"   # "distress" (civilian emergency) | "patrol" (officer report)
     messages: List[Dict] = field(default_factory=list)  # LLM conversation history
     transcriptions: List[TranscriptionEntry] = field(default_factory=list)
     situation_type: Optional[str] = None
@@ -39,10 +40,11 @@ class CallState:
     caller_needs: Optional[str] = None
     alert_raised: bool = False
     incident_id: Optional[str] = None
+    situation: Optional[Dict] = None  # AI-generated intelligence when alert raised
 
 
-VOICE_AGENT_SYSTEM_PROMPT = """You are AEGIS Voice, an emergency response AI for Changi Airport Security.
-You are receiving an incoming call from an intercom or emergency phone at {location_name} (Terminal {terminal}).
+DISTRESS_SYSTEM_PROMPT = """You are AEGIS Voice, an emergency response AI for Changi Airport Security.
+You are receiving a civilian distress call from an intercom or emergency phone at {location_name} (Terminal {terminal}).
 
 Available cameras: {cameras}
 Nearest responders: {responders}
@@ -58,6 +60,22 @@ Your role:
 Response format: Speak directly to the caller. Do not use any JSON or structured format.
 """
 
+PATROL_SYSTEM_PROMPT = """You are AEGIS, an AI dispatcher for Changi Airport Security Operations.
+You are receiving a patrol report from a security officer at {location_name} (Terminal {terminal}).
+
+Available cameras near this location: {cameras}
+Other patrol units: {responders}
+
+Your role:
+- Acknowledge the report with brevity and precision
+- Ask targeted clarifying questions to establish: threat level, number of subjects, movement direction
+- Confirm dispatch instructions and coordination with other units
+- Use standard security brevity (copy, roger, wilco, stand by)
+- Keep responses to 1-2 sentences
+
+Response format: Direct comms to the officer. No JSON. No civilian-facing language.
+"""
+
 URGENCY_ASSESSMENT_PROMPT = """Based on this emergency call conversation, rate the urgency from 0.0 to 1.0.
 
 Conversation:
@@ -70,6 +88,31 @@ Rate urgency where:
 0.9-1.0 = Critical (life threatening, all agencies)
 
 Respond with ONLY a number between 0.0 and 1.0. No other text."""
+
+CALL_INTELLIGENCE_PROMPT = """You are AEGIS, an expert airport security analyst. A {call_type} call just triggered a high-urgency alert.
+
+Location: {location_name} (Terminal {terminal})
+Call type: {call_type}
+Urgency score: {urgency_score:.2f}
+Call transcript:
+{conversation}
+
+Generate a structured security intelligence assessment as valid JSON with this exact shape:
+{{
+  "explanation": "<2-3 sentence summary of the situation from the call>",
+  "severity_level": <1-5 integer, where 5=critical>,
+  "recommendations": [
+    {{"priority": 1, "action": "<specific action>", "reasoning": "<why>", "who": "<responsible unit>"}},
+    {{"priority": 2, "action": "<specific action>", "reasoning": "<why>", "who": "<responsible unit>"}},
+    {{"priority": 3, "action": "<specific action>", "reasoning": "<why>", "who": "<responsible unit>"}}
+  ],
+  "contacts": [
+    {{"name": "<name or role>", "role": "<department/title>", "phone": "<Changi Airport number if applicable>"}},
+    {{"name": "<name or role>", "role": "<department/title>"}}
+  ]
+}}
+
+Respond ONLY with the JSON object. No other text."""
 
 
 class VoiceAgent:
@@ -86,8 +129,24 @@ class VoiceAgent:
         self.knowledge_graph = knowledge_graph
         self._active_calls: Dict[str, CallState] = {}
 
-    async def start_call(self, source_id: str, location_id: str) -> CallState:
-        """Initialize a new call session and emit WebSocket event."""
+    async def start_call(
+        self,
+        source_id: str,
+        location_id: str,
+        call_type: str = "distress",
+    ) -> CallState:
+        """Initialize a new call session and emit WebSocket event.
+
+        call_type:
+          "distress" — civilian emergency intercom / public help point
+          "patrol"   — security officer radio or field phone report
+        Auto-detected from source_id if not provided: source IDs beginning with
+        PATROL_ or OFFICER_ are treated as patrol calls.
+        """
+        # Auto-detect patrol calls from source_id naming convention
+        if source_id.upper().startswith(("PATROL_", "OFFICER_", "OFC_", "SEC_")):
+            call_type = "patrol"
+
         call_id = str(uuid.uuid4())
         call = CallState(
             call_id=call_id,
@@ -95,6 +154,7 @@ class VoiceAgent:
             source_id=source_id,
             location_id=location_id,
             status="active",
+            call_type=call_type,
         )
         self._active_calls[call_id] = call
 
@@ -106,6 +166,7 @@ class VoiceAgent:
                 "call_id": call_id,
                 "source_id": source_id,
                 "location_id": location_id,
+                "call_type": call_type,
                 "location_name": location.get("name", location_id) if location else location_id,
                 "started_at": call.started_at.isoformat(),
             })
@@ -261,7 +322,7 @@ class VoiceAgent:
         return self._active_calls.get(call_id)
 
     def _build_system_prompt(self, call: CallState) -> str:
-        """Build location-aware system prompt for the voice agent."""
+        """Build location-aware system prompt (patrol vs distress)."""
         location = {}
         cameras = []
         responders = []
@@ -275,12 +336,58 @@ class VoiceAgent:
             f"{r['unit']} ({r['eta_seconds']}s away)" for r in responders
         ) if responders else "Patrol units standing by"
 
-        return VOICE_AGENT_SYSTEM_PROMPT.format(
+        template = PATROL_SYSTEM_PROMPT if call.call_type == "patrol" else DISTRESS_SYSTEM_PROMPT
+        return template.format(
             location_name=location.get("name", call.location_id),
             terminal=location.get("terminal", "Unknown"),
             cameras=", ".join(cameras[:3]) if cameras else "None",
             responders=responder_text,
         )
+
+    async def _generate_call_intelligence(self, call: CallState) -> Optional[Dict]:
+        """Use LLM to produce structured incident intelligence from the call transcript.
+
+        Returns a dict with explanation, severity_level, recommendations, contacts —
+        matching the Incident shape so the frontend can surface it in the intelligence
+        panels without needing a separate fusion event.
+        """
+        import json
+        import re
+
+        conversation = "\n".join(
+            f"{t.role.upper()}: {t.text}" for t in call.transcriptions
+        )
+        if not conversation:
+            return None
+
+        location = {}
+        if self.knowledge_graph:
+            location = self.knowledge_graph.get_location(call.location_id) or {}
+
+        prompt = CALL_INTELLIGENCE_PROMPT.format(
+            call_type=call.call_type,
+            location_name=location.get("name", call.location_id),
+            terminal=location.get("terminal", "Unknown"),
+            urgency_score=call.urgency_score,
+            conversation=conversation,
+        )
+
+        try:
+            response = await self.llm.chat(
+                system_prompt="You are a security intelligence analyst. Respond only with valid JSON.",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.2,
+                max_tokens=600,
+            )
+            # Strip markdown fences if present
+            text = re.sub(r"^```(?:json)?\s*|\s*```$", "", response.strip(), flags=re.MULTILINE)
+            data = json.loads(text)
+            # Clamp severity
+            data["severity_level"] = max(1, min(5, int(data.get("severity_level", 3))))
+            return data
+        except Exception as e:
+            print(f"Call intelligence generation failed: {e}")
+            return None
 
     async def _assess_urgency(self, call: CallState) -> float:
         """Use LLM to rate urgency of the call so far."""
@@ -309,13 +416,19 @@ class VoiceAgent:
         return call.urgency_score  # Keep existing score on failure
 
     async def _raise_soc_alert(self, call: CallState):
-        """Emit a high-urgency alert to the SOC."""
+        """Emit a high-urgency alert to the SOC, with AI-generated situation intelligence."""
+        # Generate structured intelligence from the call transcript
+        situation = await self._generate_call_intelligence(call)
+        call.situation = situation
+
         try:
             from api.websocket.manager import emit_voice_event
             await emit_voice_event("alert", {
                 "call_id": call.call_id,
+                "call_type": call.call_type,
                 "location_id": call.location_id,
                 "urgency_score": call.urgency_score,
+                "situation": situation,   # full intelligence block — may be None if LLM failed
                 "message": "Voice agent detected high-urgency situation — SOC review recommended",
                 "timestamp": datetime.utcnow().isoformat(),
             })
