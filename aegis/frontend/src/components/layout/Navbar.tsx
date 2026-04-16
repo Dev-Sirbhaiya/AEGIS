@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Bell, Shield, User } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { useIncidentStore } from '../../stores/incidentStore';
+import ThreatLevelGauge from '../shared/ThreatLevelGauge';
 
 export default function Navbar() {
   const { user, logout } = useAuthStore();
@@ -17,44 +18,50 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-700 px-4 py-2 flex items-center justify-between shrink-0">
+    <nav className="glass-panel rounded-none border-x-0 border-t-0 px-4 py-2 flex items-center justify-between shrink-0" style={{borderBottom:'1px solid rgba(0,212,255,0.2)'}}>
+      {/* Brand */}
       <div className="flex items-center gap-3">
-        <Shield className="text-blue-400" size={24} />
-        <span className="text-white font-bold text-lg tracking-wide">AEGIS</span>
-        <span className="text-gray-500 text-xs">SOC Dashboard</span>
+        <div className="relative">
+          <Shield className="text-aegis-cyan animate-pulse" size={22} style={{animationDuration:'3s'}} />
+        </div>
+        <span className="font-bold text-lg tracking-widest text-gradient-cyan font-mono">AEGIS</span>
+        <span className="text-gray-500 text-xs font-mono hidden sm:block">SOC DASHBOARD</span>
       </div>
 
+      {/* Nav links */}
       <div className="flex items-center gap-1">
         {navLinks.map((link) => (
           <Link
             key={link.to}
             to={link.to}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-sm font-medium transition-all duration-200 font-mono text-xs tracking-wider ${
               location.pathname === link.to
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                ? 'text-aegis-cyan border-b-2 border-aegis-cyan bg-aegis-cyan/5'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
-            {link.label}
+            {link.label.toUpperCase()}
           </Link>
         ))}
       </div>
 
+      {/* Right side */}
       <div className="flex items-center gap-3">
+        <ThreatLevelGauge />
         <div className="relative">
-          <Bell size={18} className="text-gray-400" />
+          <Bell size={16} className="text-gray-400" />
           {activeIncidents > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+            <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[9px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold glow-red">
               {activeIncidents > 9 ? '9+' : activeIncidents}
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-400">
-          <User size={16} />
+        <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
+          <User size={14} />
           <span>{user?.username ?? 'operator'}</span>
-          <span className="text-gray-600">|</span>
-          <button onClick={logout} className="hover:text-white transition-colors">
-            Logout
+          <span className="text-gray-700">|</span>
+          <button onClick={logout} className="hover:text-aegis-cyan transition-colors">
+            LOGOUT
           </button>
         </div>
       </div>

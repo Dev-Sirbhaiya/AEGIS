@@ -1,20 +1,25 @@
 import { useEffect, useState } from 'react';
 import { isConnected } from '../../services/socket';
 
-interface ModelStatus {
-  label: string;
-  key: string;
-}
+const MODELS = [
+  { label: 'AI Engine', key: 'ai' },
+  { label: 'RAG',       key: 'rag' },
+  { label: 'Voice',     key: 'voice' },
+];
 
-const MODELS: ModelStatus[] = [
-  { label: 'Video', key: 'video' },
-  { label: 'Audio', key: 'audio' },
-  { label: 'LLM', key: 'llm' },
+const TICKER_MESSAGES = [
+  'All systems nominal',
+  'Multimodal fusion active',
+  'Knowledge base indexed',
+  'RAG pipeline ready',
+  'Voice agent standby',
+  'WebSocket connected',
 ];
 
 export default function StatusBar() {
   const [connected, setConnected] = useState(false);
   const [uptime, setUptime] = useState(0);
+  const [tickerIdx, setTickerIdx] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,31 +29,56 @@ export default function StatusBar() {
     return () => clearInterval(interval);
   }, []);
 
-  const formatUptime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  useEffect(() => {
+    const t = setInterval(() => setTickerIdx((i) => (i + 1) % TICKER_MESSAGES.length), 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  const formatUptime = (s: number) => {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
   };
 
   return (
-    <div className="bg-gray-950 border-t border-gray-800 px-4 py-1.5 flex items-center justify-between text-xs shrink-0">
+    <div
+      className="px-4 py-1 flex items-center justify-between text-xs shrink-0 font-mono"
+      style={{ background: 'rgba(8,12,24,0.95)', borderTop: '1px solid rgba(0,212,255,0.12)' }}
+    >
+      {/* Connection status */}
       <div className="flex items-center gap-2">
-        <div className={`w-2 h-2 rounded-full ${connected ? 'bg-green-400' : 'bg-red-500'}`} />
-        <span className="text-gray-400">{connected ? 'Connected' : 'Disconnected'}</span>
+        <div className="relative w-2 h-2">
+          <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400' : 'bg-red-500'}`} />
+          {connected && (
+            <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-400 animate-ping opacity-50" />
+          )}
+        </div>
+        <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
+          {connected ? 'CONNECTED' : 'OFFLINE'}
+        </span>
+        <span className="text-gray-700 mx-1">|</span>
+        <span className="text-aegis-cyan/60 animate-fade-in" key={tickerIdx}>
+          {TICKER_MESSAGES[tickerIdx]}
+        </span>
       </div>
 
+      {/* Model health dots */}
       <div className="flex items-center gap-4">
         {MODELS.map((model) => (
           <div key={model.key} className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-400" />
+            <div className="relative w-1.5 h-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <div className="absolute inset-0 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping opacity-40" style={{animationDuration:'2.5s'}} />
+            </div>
             <span className="text-gray-500">{model.label}</span>
           </div>
         ))}
       </div>
 
+      {/* Uptime */}
       <div className="text-gray-500">
-        Uptime: <span className="text-gray-400 font-mono">{formatUptime(uptime)}</span>
+        UPTIME <span className="text-aegis-cyan/70">{formatUptime(uptime)}</span>
       </div>
     </div>
   );
