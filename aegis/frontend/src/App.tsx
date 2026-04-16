@@ -24,35 +24,57 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-      <div className="bg-gray-900 border border-gray-700 rounded-xl p-8 w-full max-w-sm">
-        <div className="text-center mb-6">
-          <div className="text-3xl font-bold text-white mb-1">AEGIS</div>
-          <div className="text-gray-400 text-sm">Security Operations Centre</div>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-base)' }}>
+      {/* Animated background rings */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        {[160, 280, 400, 520].map((r) => (
+          <div key={r} className="absolute rounded-full border border-aegis-cyan/5"
+            style={{ width: r, height: r }} />
+        ))}
+      </div>
+
+      <div className="glass-panel p-8 w-full max-w-sm relative z-10" style={{ boxShadow: '0 0 40px rgba(0,212,255,0.08)' }}>
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-3">
+            <div className="relative">
+              <div className="w-14 h-14 rounded-full bg-aegis-cyan/10 border border-aegis-cyan/30 flex items-center justify-center">
+                <span className="text-aegis-cyan text-2xl">⬡</span>
+              </div>
+              <div className="absolute inset-0 rounded-full border border-aegis-cyan/20 animate-pulse" />
+            </div>
+          </div>
+          <div className="text-3xl font-bold tracking-widest font-mono text-gradient-cyan">AEGIS</div>
+          <div className="text-gray-500 text-xs mt-1 font-mono tracking-wider">ADAPTIVE SECURITY INTELLIGENCE</div>
+          <div className="text-gray-600 text-xs mt-1 italic">"See. Hear. Understand. Respond."</div>
         </div>
-        <form onSubmit={handleLogin} className="space-y-4">
+
+        <form onSubmit={handleLogin} className="space-y-3">
           <input
             type="text"
-            placeholder="Username"
+            placeholder="USERNAME"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-gray-800 text-white border border-gray-600 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-white/5 text-white border border-white/10 rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 focus:bg-aegis-cyan/5 transition-all placeholder:text-gray-600"
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="PASSWORD"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-gray-800 text-white border border-gray-600 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-white/5 text-white border border-white/10 rounded px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-aegis-cyan/60 focus:bg-aegis-cyan/5 transition-all placeholder:text-gray-600"
           />
-          {error && <p className="text-red-400 text-xs">{error}</p>}
+          {error && <p className="text-red-400 text-xs font-mono">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded text-sm transition-colors"
+            className="w-full py-2.5 font-mono font-bold text-sm rounded tracking-widest transition-all duration-200 text-aegis-cyan border border-aegis-cyan/40 bg-aegis-cyan/10 hover:bg-aegis-cyan/20 hover:border-aegis-cyan/70 hover:shadow-[0_0_16px_rgba(0,212,255,0.3)]"
           >
-            Sign In
+            AUTHENTICATE
           </button>
         </form>
+
+        <div className="mt-6 text-center text-[10px] font-mono text-gray-700">
+          CERTIS GROUP · CHANGI AIRPORT · SOC-SECURE
+        </div>
       </div>
     </div>
   );
@@ -63,16 +85,18 @@ function ReportsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex gap-2 px-6 pt-4 border-b border-gray-700 pb-0">
+      <div className="flex gap-1 px-6 pt-4 border-b border-white/5 pb-0">
         {(['daily', 'monthly', 'predictive'] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors capitalize ${
-              tab === t ? 'border-blue-500 text-white' : 'border-transparent text-gray-400 hover:text-white'
+            className={`px-4 py-2 text-xs font-mono font-medium border-b-2 transition-all tracking-wider ${
+              tab === t
+                ? 'border-aegis-cyan text-aegis-cyan'
+                : 'border-transparent text-gray-500 hover:text-gray-300'
             }`}
           >
-            {t === 'predictive' ? 'Predictive Map' : `${t.charAt(0).toUpperCase() + t.slice(1)} Report`}
+            {t === 'predictive' ? 'PREDICTIVE' : t.toUpperCase()}
           </button>
         ))}
       </div>
@@ -87,7 +111,7 @@ function ReportsPage() {
 
 function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen flex flex-col bg-gray-950 text-white overflow-hidden">
+    <div className="h-screen flex flex-col text-white overflow-hidden" style={{ background: 'var(--bg-base)' }}>
       <Navbar />
       <main className="flex-1 overflow-hidden min-h-0">
         {children}
