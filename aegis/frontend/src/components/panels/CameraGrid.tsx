@@ -6,14 +6,15 @@ const GRID_CAMERAS = [
   { label: 'T2 Gate B4',       video: '/media/videos/terminal_corridor.mp4', locationId: 'T2_GATE_B4' },
   { label: 'T3 Arrival Hall',  video: '/media/videos/arrival_hall.mp4',      locationId: 'T3_ARRIVAL_HALL' },
   { label: 'T1 Check-in',      video: '/media/videos/rolling_corridor.mp4',  locationId: 'T1_CHECKIN_ROW_G' },
-  { label: 'T4 Departure',     video: '/media/videos/terminal_corridor.mp4', locationId: 'T4_CHECKIN' },
+  { label: 'T4 Screening',     video: '/media/videos/security_screening.mp4', locationId: 'T4_SCREENING_A' },
 ];
 
 interface Props {
   onExpand: () => void;
+  onSelectCamera?: (locationId: string) => void;
 }
 
-export default function CameraGrid({ onExpand }: Props) {
+export default function CameraGrid({ onExpand, onSelectCamera }: Props) {
   const incidents = useIncidentStore((s) => s.incidents);
 
   return (
@@ -32,7 +33,17 @@ export default function CameraGrid({ onExpand }: Props) {
           const hasAlert = incidents.some(
             (i) => i.status === 'active' && i.severity_level >= 4 && i.location_id === cam.locationId
           );
-          return <GridTile key={idx} cam={cam} hasAlert={hasAlert} onExpand={onExpand} />;
+          return (
+            <GridTile
+              key={idx}
+              cam={cam}
+              hasAlert={hasAlert}
+              onSelect={() => {
+                onSelectCamera?.(cam.locationId);
+                onExpand();
+              }}
+            />
+          );
         })}
       </div>
     </div>
@@ -42,11 +53,11 @@ export default function CameraGrid({ onExpand }: Props) {
 function GridTile({
   cam,
   hasAlert,
-  onExpand,
+  onSelect,
 }: {
-  cam: { label: string; video: string };
+  cam: { label: string; video: string; locationId: string };
   hasAlert: boolean;
-  onExpand: () => void;
+  onSelect: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -56,7 +67,7 @@ function GridTile({
 
   return (
     <button
-      onClick={onExpand}
+      onClick={onSelect}
       className={`relative aspect-video overflow-hidden bg-black group ${hasAlert ? 'ring-1 ring-red-500' : ''}`}
     >
       <video

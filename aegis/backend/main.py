@@ -105,6 +105,7 @@ app = FastAPI(
     description="Adaptive Engagement & Guided Intelligence for Security",
     version="1.0.0",
     lifespan=lifespan,
+    redirect_slashes=False,
 )
 
 # CORS — allow frontend origin

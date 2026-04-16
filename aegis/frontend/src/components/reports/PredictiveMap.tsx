@@ -25,7 +25,11 @@ export default function PredictiveMap() {
 
   useEffect(() => {
     api.get('/reports/predictions')
-      .then(({ data }) => setData(data.predictions ?? []))
+      .then(({ data }) => {
+        const predictions = data.predictions ?? [];
+        // Fall back to demo data when backend returns empty (no history indexed yet)
+        setData(predictions.length > 0 ? predictions : demoPredictions);
+      })
       .catch(() => setData(demoPredictions))
       .finally(() => setLoading(false));
   }, []);

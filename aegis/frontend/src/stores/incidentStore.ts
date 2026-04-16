@@ -41,7 +41,12 @@ export const useIncidentStore = create<IncidentStore>((set, get) => ({
     try {
       const { data } = await api.get('/incidents?limit=50');
       const incidents = data.incidents || [];
-      set({ incidents, selectedIncident: incidents[0] ?? null });
+      // Fall back to demo data if the backend returns an empty database
+      if (incidents.length === 0) {
+        set({ incidents: demoIncidents, selectedIncident: demoIncidents[0] ?? null });
+      } else {
+        set({ incidents, selectedIncident: incidents[0] ?? null });
+      }
     } catch (err) {
       console.error('Failed to fetch incidents:', err);
       set({ incidents: demoIncidents, selectedIncident: demoIncidents[0] ?? null });

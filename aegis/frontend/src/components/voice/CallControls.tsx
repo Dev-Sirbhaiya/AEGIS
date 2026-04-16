@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useVoiceStore } from '../../stores/voiceStore';
 import api from '../../services/api';
-import { UserCheck, PhoneOff, Mic, MicOff } from 'lucide-react';
+import { UserCheck, PhoneOff } from 'lucide-react';
 
 export default function CallControls() {
   const { selectedCallId, updateCall, removeCall } = useVoiceStore();
-  const [muted, setMuted] = useState(false);
   const [loading, setLoading] = useState<string | null>(null);
 
   if (!selectedCallId) return null;
@@ -43,18 +42,6 @@ export default function CallControls() {
       >
         <UserCheck size={14} />
         TAKE OVER
-      </button>
-
-      <button
-        onClick={() => setMuted((m) => !m)}
-        className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold rounded border transition-all ${
-          muted
-            ? 'bg-amber-950 border-amber-700 text-amber-400'
-            : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/20'
-        }`}
-      >
-        {muted ? <MicOff size={14} /> : <Mic size={14} />}
-        {muted ? 'MUTED' : 'MUTE'}
       </button>
 
       <button

@@ -32,7 +32,7 @@ bash scripts/setup.sh
 ```bash
 # Terminal 1 — Backend
 cd aegis/backend
-uvicorn main:socket_app --host 0.0.0.0 --port 8000 --reload
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 # Terminal 2 — Frontend
 cd aegis/frontend

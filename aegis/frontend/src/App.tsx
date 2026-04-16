@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuthStore } from './stores/authStore';
 import Navbar from './components/layout/Navbar';
 import StatusBar from './components/layout/StatusBar';
 import Dashboard from './components/layout/Dashboard';
@@ -8,16 +9,26 @@ import DailyReport from './components/reports/DailyReport';
 import MonthlyReport from './components/reports/MonthlyReport';
 import PredictiveMap from './components/reports/PredictiveMap';
 
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+}
+
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  // Already logged in — skip the login screen
+  if (isAuthenticated) return <Navigate to="/" replace />;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { useAuthStore } = await import('./stores/authStore');
       await useAuthStore.getState().login(username, password);
+      navigate('/', { replace: true });
     } catch {
       setError('Invalid credentials');
     }
@@ -128,27 +139,33 @@ export default function App() {
       <Route
         path="/"
         element={
-          <AppShell>
-            <Dashboard />
-          </AppShell>
+          <PrivateRoute>
+            <AppShell>
+              <Dashboard />
+            </AppShell>
+          </PrivateRoute>
         }
       />
       <Route
         path="/training"
         element={
-          <AppShell>
-            <div className="h-full overflow-y-auto">
-              <SimDashboard />
-            </div>
-          </AppShell>
+          <PrivateRoute>
+            <AppShell>
+              <div className="h-full overflow-y-auto">
+                <SimDashboard />
+              </div>
+            </AppShell>
+          </PrivateRoute>
         }
       />
       <Route
         path="/reports"
         element={
-          <AppShell>
-            <ReportsPage />
-          </AppShell>
+          <PrivateRoute>
+            <AppShell>
+              <ReportsPage />
+            </AppShell>
+          </PrivateRoute>
         }
       />
       <Route path="*" element={<Navigate to="/" replace />} />

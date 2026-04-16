@@ -16,11 +16,11 @@ export function getSocket(): Socket {
 }
 
 export function subscribeIncidents() {
-  getSocket().emit('subscribe', { room: 'incidents' });
+  getSocket().emit('subscribe_incidents', {});
 }
 
 export function subscribeVoice() {
-  getSocket().emit('subscribe', { room: 'voice' });
+  getSocket().emit('subscribe_voice', {});
 }
 
 export function onIncidentNew(cb: (data: unknown) => void): () => void {

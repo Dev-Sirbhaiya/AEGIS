@@ -7,10 +7,12 @@ const LOCATION_COORDS: Record<string, { x: number; y: number }> = {
   T1_GATE_A2:       { x: 58,  y: 92  },
   T2_GATE_B4:       { x: 196, y: 72  },
   T2_CHECKIN:       { x: 196, y: 112 },
+  T2_LIFT_B3:       { x: 175, y: 130 },
   T3_ARRIVAL_HALL:  { x: 308, y: 100 },
   T3_GATE_C1:       { x: 262, y: 62  },
   T3_GATE_C3:       { x: 298, y: 56  },
   T4_CHECKIN:       { x: 408, y: 172 },
+  T4_SCREENING_A:   { x: 400, y: 158 },
   JEWEL_L1:         { x: 128, y: 138 },
   JEWEL_L2:         { x: 128, y: 162 },
 };

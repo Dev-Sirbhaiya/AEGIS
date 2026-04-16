@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { isConnected } from '../../services/socket';
+import { useIncidentStore } from '../../stores/incidentStore';
 
 const MODELS = [
   { label: 'AI Engine', key: 'ai' },
@@ -20,6 +21,8 @@ export default function StatusBar() {
   const [connected, setConnected] = useState(false);
   const [uptime, setUptime] = useState(0);
   const [tickerIdx, setTickerIdx] = useState(0);
+  const incidents = useIncidentStore((s) => s.incidents);
+  const isDemo = incidents.length > 0 && incidents[0]?.id?.startsWith('INC_DEMO_');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,6 +78,13 @@ export default function StatusBar() {
           </div>
         ))}
       </div>
+
+      {/* Demo mode badge */}
+      {isDemo && (
+        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded tracking-widest bg-amber-500/15 text-amber-400 border border-amber-500/30">
+          DEMO MODE
+        </span>
+      )}
 
       {/* Uptime */}
       <div className="text-gray-500">

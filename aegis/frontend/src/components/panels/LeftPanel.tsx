@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CameraFeed from './CameraFeed';
 import CameraGrid from './CameraGrid';
+import { useCameraStore } from '../../stores/cameraStore';
 import AudioWaveform from './AudioWaveform';
 import SensorTimeline from './SensorTimeline';
 import IncidentList from './IncidentList';
@@ -11,6 +12,14 @@ type CameraView = 'feed' | 'grid' | 'map';
 
 export default function LeftPanel() {
   const [cameraView, setCameraView] = useState<CameraView>('feed');
+  const cameras = useCameraStore((s) => s.cameras);
+  const selectCamera = useCameraStore((s) => s.selectCamera);
+
+  const handleSelectFromGrid = (locationId: string) => {
+    const cam = cameras.find((c) => c.location_id === locationId);
+    if (cam) selectCamera(cam);
+    setCameraView('feed');
+  };
 
   return (
     <div className="flex flex-col gap-3 overflow-y-auto h-full pr-1">
@@ -32,7 +41,7 @@ export default function LeftPanel() {
           ))}
         </div>
         {cameraView === 'feed' && <CameraFeed onSwitchGrid={() => setCameraView('grid')} />}
-        {cameraView === 'grid' && <CameraGrid onExpand={() => setCameraView('feed')} />}
+        {cameraView === 'grid' && <CameraGrid onExpand={() => setCameraView('feed')} onSelectCamera={handleSelectFromGrid} />}
         {cameraView === 'map'  && <TerminalMap />}
       </div>
 

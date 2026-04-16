@@ -19,11 +19,18 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class UserInfo(BaseModel):
+    user_id: str
+    username: str
+    role: str
+
+
 class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
     expires_in: int
+    user: UserInfo
 
 
 class RegisterRequest(BaseModel):
@@ -70,6 +77,11 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
         access_token=create_token(user, access_expires),
         refresh_token=create_token(user, refresh_expires),
         expires_in=settings.JWT_EXPIRY_MINUTES * 60,
+        user=UserInfo(
+            user_id=str(user.id),
+            username=user.username,
+            role=user.role,
+        ),
     )
 
 
