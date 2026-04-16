@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 import api from '../../services/api';
 import LoadingSpinner from '../shared/LoadingSpinner';
 import { format } from 'date-fns';
+import { demoMonthlyReport } from '../../demo/data';
 
 export default function MonthlyReport() {
   const [month, setMonth] = useState(format(new Date(), 'yyyy-MM'));
@@ -15,7 +16,7 @@ export default function MonthlyReport() {
       const { data } = await api.get(`/reports/monthly/${month}`);
       setReport(data);
     } catch {
-      setReport(null);
+      setReport(demoMonthlyReport);
     } finally {
       setLoading(false);
     }
@@ -40,7 +41,7 @@ export default function MonthlyReport() {
         />
         <button
           onClick={fetchReport}
-          className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded"
+          className="px-4 py-1.5 bg-aegis-cyan/15 hover:bg-aegis-cyan/25 border border-aegis-cyan/40 text-aegis-cyan text-xs font-mono font-bold rounded transition-all"
         >
           Load Report
         </button>
@@ -50,13 +51,13 @@ export default function MonthlyReport() {
 
       {!loading && report && (
         <div className="space-y-4">
-          <div className="bg-gray-800 rounded border border-gray-700 p-4">
+          <div className="glass-panel p-4">
             <h3 className="text-white font-semibold mb-2">Executive Summary</h3>
             <p className="text-gray-300 text-sm">{report.executive_summary}</p>
           </div>
 
           {chartData.length > 0 && (
-            <div className="bg-gray-800 rounded border border-gray-700 p-4">
+            <div className="glass-panel p-4">
               <h3 className="text-white font-semibold mb-4">Incidents by Severity</h3>
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={chartData}>
@@ -67,14 +68,14 @@ export default function MonthlyReport() {
                     labelStyle={{ color: '#F9FAFB' }}
                     itemStyle={{ color: '#60A5FA' }}
                   />
-                  <Bar dataKey="count" fill="#3B82F6" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="count" fill="#00d4ff" radius={[3, 3, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           )}
 
           {report.threat_landscape && (
-            <div className="bg-gray-800 rounded border border-gray-700 p-4">
+            <div className="glass-panel p-4">
               <h3 className="text-white font-semibold mb-2">Threat Landscape</h3>
               <p className="text-gray-400 text-xs mb-2">{report.threat_landscape.threat_level_assessment}</p>
               <div className="grid grid-cols-2 gap-3">
@@ -99,7 +100,7 @@ export default function MonthlyReport() {
           )}
 
           {report.strategic_recommendations && (
-            <div className="bg-gray-800 rounded border border-gray-700 p-4">
+            <div className="glass-panel p-4">
               <h3 className="text-white font-semibold mb-2">Strategic Recommendations</h3>
               <div className="space-y-2">
                 {report.strategic_recommendations.map((r: any, i: number) => (

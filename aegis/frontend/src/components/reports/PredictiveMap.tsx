@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../../services/api';
 import LoadingSpinner from '../shared/LoadingSpinner';
+import { demoPredictions } from '../../demo/data';
 
 interface RiskEntry {
   location_id: string;
@@ -25,7 +26,7 @@ export default function PredictiveMap() {
   useEffect(() => {
     api.get('/reports/predictions')
       .then(({ data }) => setData(data.predictions ?? []))
-      .catch(() => setData([]))
+      .catch(() => setData(demoPredictions))
       .finally(() => setLoading(false));
   }, []);
 

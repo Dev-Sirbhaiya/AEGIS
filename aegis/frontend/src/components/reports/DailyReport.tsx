@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import LoadingSpinner from '../shared/LoadingSpinner';
-import { format, subDays } from 'date-fns';
+import { format } from 'date-fns';
+import { demoDailyReport } from '../../demo/data';
 
 export default function DailyReport() {
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [report, setReport] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setReport(demoDailyReport);
+  }, []);
 
   const fetchReport = async () => {
     setLoading(true);
@@ -14,7 +19,7 @@ export default function DailyReport() {
       const { data } = await api.get(`/reports/daily/${date}`);
       setReport(data);
     } catch {
-      setReport(null);
+      setReport(demoDailyReport);
     } finally {
       setLoading(false);
     }
@@ -31,9 +36,9 @@ export default function DailyReport() {
         />
         <button
           onClick={fetchReport}
-          className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded"
+          className="px-4 py-1.5 bg-aegis-cyan/15 hover:bg-aegis-cyan/25 border border-aegis-cyan/40 text-aegis-cyan text-xs font-mono font-bold rounded transition-all"
         >
-          Load Report
+          LOAD REPORT
         </button>
       </div>
 
@@ -41,7 +46,7 @@ export default function DailyReport() {
 
       {!loading && report && (
         <div className="space-y-4">
-          <div className="bg-gray-800 rounded border border-gray-700 p-4">
+          <div className="glass-panel p-4">
             <h3 className="text-white font-semibold mb-2">Executive Summary</h3>
             <p className="text-gray-300 text-sm">{report.executive_summary}</p>
           </div>
@@ -54,7 +59,7 @@ export default function DailyReport() {
                 { label: 'Avg Response', value: `${Math.round((report.metrics.avg_response_time_seconds ?? 0) / 60)}m` },
               ].map((m) => (
                 <div key={m.label} className="bg-gray-800 rounded border border-gray-700 p-3 text-center">
-                  <div className="text-2xl font-bold text-white">{m.value}</div>
+                  <div className="text-2xl font-mono font-bold text-aegis-cyan">{m.value}</div>
                   <div className="text-gray-500 text-xs mt-1">{m.label}</div>
                 </div>
               ))}
@@ -62,7 +67,7 @@ export default function DailyReport() {
           )}
 
           {report.patterns_observed && report.patterns_observed.length > 0 && (
-            <div className="bg-gray-800 rounded border border-gray-700 p-4">
+            <div className="glass-panel p-4">
               <h3 className="text-white font-semibold mb-2">Patterns Observed</h3>
               <ul className="space-y-1">
                 {report.patterns_observed.map((p: string, i: number) => (
@@ -75,7 +80,7 @@ export default function DailyReport() {
           )}
 
           {report.tomorrow_watchpoints && report.tomorrow_watchpoints.length > 0 && (
-            <div className="bg-gray-800 rounded border border-gray-700 p-4">
+            <div className="glass-panel p-4">
               <h3 className="text-yellow-400 font-semibold mb-2">Tomorrow Watchpoints</h3>
               <ul className="space-y-1">
                 {report.tomorrow_watchpoints.map((w: string, i: number) => (

@@ -3,6 +3,7 @@ import api from '../../services/api';
 import type { Scenario } from '../../types/simulation';
 import LoadingSpinner from '../shared/LoadingSpinner';
 import SeverityBadge from '../shared/SeverityBadge';
+import { demoScenarios } from '../../demo/data';
 
 interface Props {
   onStart: (sessionId: string, scenario: Scenario) => void;
@@ -20,10 +21,17 @@ export default function ScenarioSelect({ onStart }: Props) {
   const [starting, setStarting] = useState<string | null>(null);
 
   useEffect(() => {
-    api.get('/simulation/scenarios').then(({ data }) => {
-      setScenarios(data.scenarios ?? []);
-      setLoading(false);
-    });
+    api
+      .get('/simulation/scenarios')
+      .then(({ data }) => {
+        setScenarios(data.scenarios ?? []);
+      })
+      .catch(() => {
+        setScenarios(demoScenarios);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const handleStart = async (scenario: Scenario) => {
@@ -34,6 +42,8 @@ export default function ScenarioSelect({ onStart }: Props) {
         user_id: 'demo_user',
       });
       onStart(data.session_id, scenario);
+    } catch {
+      onStart(`demo-${scenario.scenario_id}-${Date.now()}`, scenario);
     } finally {
       setStarting(null);
     }
@@ -46,7 +56,12 @@ export default function ScenarioSelect({ onStart }: Props) {
   return (
     <div>
       <h2 className="text-white text-xl font-bold mb-1">Training Scenarios</h2>
-      <p className="text-gray-400 text-sm mb-6">Select a scenario to begin a simulation exercise.</p>
+      <p className="text-gray-400 text-sm mb-2">Select a scenario to begin a simulation exercise.</p>
+      {scenarios === demoScenarios && (
+        <div className="mb-6 inline-flex items-center gap-2 rounded border border-blue-700 bg-blue-950/40 px-3 py-1.5 text-xs text-blue-300">
+          Demo mode active: running from local scenario data
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {scenarios.map((scenario) => (
